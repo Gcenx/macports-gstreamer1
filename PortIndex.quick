@@ -1,6 +1,10 @@
-gstreamer1 0
-gstreamer1-gst-libav 749
-gstreamer1-gst-plugins-bad 1338
-gstreamer1-gst-plugins-base 2593
-gstreamer1-gst-plugins-good 3392
-gstreamer1-gst-plugins-ugly 4541
+glib2 0
+gstreamer1 686
+gstreamer1-gst-libav 1435
+gstreamer1-gst-plugins-bad 2024
+gstreamer1-gst-plugins-base 3279
+gstreamer1-gst-plugins-good 4078
+gstreamer1-gst-plugins-ugly 5227
+harfbuzz 6158
+harfbuzz-icu 6727
+pango 7250
