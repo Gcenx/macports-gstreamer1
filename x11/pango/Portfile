@@ -2,7 +2,7 @@
 
 PortSystem              1.0
 PortGroup               active_variants 1.1
-PortGroup               gobject_introspection 1.0
+PortGroup               meson 1.0
 PortGroup               muniversal 1.0
 
 # Please keep the pango and pango-devel ports as similar as possible.
@@ -11,15 +11,15 @@ name                    pango
 conflicts               pango-devel
 set my_name             pango
 epoch                   1
-version                 1.42.4
-revision                3
-checksums               rmd160  e91880e0e9a459bbc2c280ac747ab31f80352000 \
-                        sha256  1d2b74cd63e8bd41961f2f8d952355aa0f9be6002b52c8aa7699d9f5da597c9d \
-                        size    833876
+version                 1.48.3
+revision                0
+checksums               rmd160  32de268a3b1f14f558735538ce0bf6255ae1f9c7 \
+                        sha256  36ea145c82217c8efc954d02aa577391b1d9a5da205e0aef7ffe0461349b4b46 \
+                        size    565956
 
 set branch              [join [lrange [split ${version} .] 0 1] .]
 categories              x11
-maintainers             {ryandesign @ryandesign} openmaintainer
+maintainers             {gcenx @gcenx}
 license                 LGPL-2+
 homepage                https://www.pango.org/
 master_sites            gnome:sources/${my_name}/${branch}
@@ -37,22 +37,32 @@ long_description \
     open-source framework for the layout and rendering \
     of internationalized text.
 
-depends_build \
+set python_version          39
+set python_branch           3.9
+
+depends_build-append \
     port:pkgconfig
 
-depends_lib \
+depends_lib-append \
+    port:gobject-introspection \
     path:lib/pkgconfig/glib-2.0.pc:glib2 \
     path:lib/pkgconfig/cairo.pc:cairo \
     port:fribidi \
-    port:harfbuzz
+    port:graphite2 \
+    port:harfbuzz \
+    port:libthai \
+    port:python${python_version}
 
-patchfiles-append       fix-pango_layout_get_pixel_extents-crash.patch
+configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
+build.env-append            PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
+configure.python            ${prefix}/bin/python${python_branch}
 
-configure.args          --enable-static \
-                        --disable-silent-rules \
-                        --without-xft
+compiler.cxx_standard 2011
+configure.cxxflags-append -std=c++11
 
-gobject_introspection   yes
+configure.args          -Ddefault_library=both \
+                        -Dintrospection=enabled \
+                        -Dxft=disabled
 
 license_noconflict      gobject-introspection
 
@@ -76,9 +86,7 @@ platform macosx {
 
 variant x11 {
     depends_lib-append      port:Xft2
-    configure.args-delete   --without-xft
-    configure.args-append   --x-include=${prefix}/include \
-                            --x-lib=${prefix}/lib
+    configure.args-delete   -Dxft=disbled
 }
 
 default_variants        +x11
@@ -92,11 +100,18 @@ if {[variant_isset x11]} {
     require_active_variants path:lib/pkgconfig/cairo.pc:cairo x11
 }
 
-post-destroot {
-    set docdir ${prefix}/share/doc/${my_name}
-    xinstall -d ${destroot}${docdir}
-    xinstall -m 0644 -W ${worksrcpath} AUTHORS ChangeLog COPYING MAINTAINERS NEWS README THANKS \
-        ${destroot}${docdir}
+# gobject-introspection uses g-ir-scanner, which uses $CC from env
+if {![info exists universal_possible]} {
+    set universal_possible [expr {${os.universal_supported} && [llength ${configure.universal_archs}] >= 2}]
+}
+if {${universal_possible} && [variant_isset universal]} {
+    foreach arch ${configure.universal_archs} {
+        lappend merger_build_env(${arch})  "CC=${configure.cc} -arch ${arch}"
+        lappend merger_destroot_env(${arch})  "CC=${configure.cc} -arch ${arch}"
+    }
+} else {
+    build.env-append       "CC=${configure.cc} ${configure.cc_archflags}"
+    destroot.env-append    "CC=${configure.cc} ${configure.cc_archflags}"
 }
 
 test.run                yes
