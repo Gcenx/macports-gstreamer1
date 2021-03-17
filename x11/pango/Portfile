@@ -89,7 +89,6 @@ variant x11 {
     configure.args-delete   -Dxft=disbled
 }
 
-default_variants        +x11
 if {${os.platform} ne "darwin" || ${os.subplatform} ne "macosx"} {
     # When not on macOS, don't allow X11 support to be disabled, since it is the
     # only available option.
