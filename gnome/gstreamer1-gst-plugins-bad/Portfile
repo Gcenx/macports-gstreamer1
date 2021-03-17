@@ -10,7 +10,7 @@ PortGroup                   active_variants 1.1
 name                        gstreamer1-gst-plugins-bad
 set my_name                 gst-plugins-bad
 # please only commit stable updates (even numbered releases)
-version                     1.18.3
+version                     1.18.4
 description                 A set of plug-ins for GStreamer that need more quality.
 long_description            GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared \
                             to the rest. They might be close to being good quality, but they're missing \
@@ -25,9 +25,9 @@ master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 distname                    ${my_name}-${version}
 use_xz                      yes
 
-checksums                   rmd160  596e53acfbbcf2fd6aac71f85fd155e5e9ec6638 \
-                            sha256  b7e34b6b86272588fbd8b314dadfa6ceff895198cfb59e2950378e9e31ff22e0 \
-                            size    5637764
+checksums                   rmd160  b53cd88e800b18bc7a6a57de30e03b6c30e2fe83 \
+                            sha256  74e806bc5595b18c70e9ca93571e27e79dfb808e5d2e7967afa952b52e99c85f \
+                            size    5640292
 
 set python_version          39
 set python_branch           3.9

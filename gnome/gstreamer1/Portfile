@@ -9,7 +9,7 @@ PortGroup                   muniversal 1.0
 name                        gstreamer1
 set my_name                 gstreamer
 # please only commit stable updates (even numbered releases)
-version                     1.18.3
+version                     1.18.4
 description                 GStreamer is a library for constructing graphs of media-handling components.
 long_description            The applications it supports range from simple Ogg/Vorbis playback, audio/video \
                             streaming to complex audio (mixing) and video (non-linear editing) processing.
@@ -24,9 +24,9 @@ master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 
 use_xz                      yes
 
-checksums                   rmd160  fa8d54de965401722c86a8f70c3466f054f188fa \
-                            sha256  0c2e09e18f2df69a99b5cb3bd53c597b3cc2e35cf6c98043bb86a66f3d312100 \
-                            size    2701612
+checksums                   rmd160  ec0c7f2163651ba43b246de1ec8bcccea1af6aa1 \
+                            sha256  9aeec99b38e310817012aa2d1d76573b787af47f8a725a65b833880a094dfbc5 \
+                            size    2703948
 
 set python_version          39
 set python_branch           3.9

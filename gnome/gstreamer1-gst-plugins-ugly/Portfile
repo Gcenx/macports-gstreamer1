@@ -9,7 +9,7 @@ PortGroup                   muniversal 1.0
 name                        gstreamer1-gst-plugins-ugly
 set my_name                 gst-plugins-ugly
 # please only commit stable updates (even numbered releases)
-version                     1.18.3
+version                     1.18.4
 description                 A set of good-quality plug-ins for GStreamer that might pose distribution \
                             problems.
 long_description            GStreamer Ugly Plug-ins is a set of plug-ins that have good quality and \
@@ -25,9 +25,9 @@ distname                    ${my_name}-${version}
 license                     GPL-2+ LGPL-2+
 use_xz                      yes
 
-checksums                   rmd160  210e19fa20da72243ec28ab489ebfbf4692b216f \
-                            sha256  70f7429b25dd2f714eb18e80af61b1363b1f63019e16cd28e086e3a619eaa992 \
-                            size    508500
+checksums                   rmd160  a640c89112085222d1c86be9678ee1d892491604 \
+                            sha256  218df0ce0d31e8ca9cdeb01a3b0c573172cc9c21bb3d41811c7820145623d13c \
+                            size    509920
 
 set python_version          39
 set python_branch           3.9

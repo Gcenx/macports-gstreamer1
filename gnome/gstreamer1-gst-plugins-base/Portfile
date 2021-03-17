@@ -10,7 +10,7 @@ PortGroup                   muniversal 1.0
 name                        gstreamer1-gst-plugins-base
 set my_name                 gst-plugins-base
 # please only commit stable updates (even numbered releases)
-version                     1.18.3
+version                     1.18.4
 description                 This is gst-plugins, a set of plug-ins for GStreamer.
 long_description            ${description}
 maintainers                 {gcenx @gcenx}
@@ -24,9 +24,9 @@ distname                    ${my_name}-${version}
 
 use_xz                      yes
 
-checksums                   rmd160  6e2fe0b80b54102b06d40cae0741492a650a5c01 \
-                            sha256  dbfa20283848f0347a223dd8523dfb62e09e5220b21b1d157a8b0c8b67ba9f52 \
-                            size    3166548
+checksums                   rmd160  9bb4f0f341b3167facc04307149a259d108f2c77 \
+                            sha256  29e53229a84d01d722f6f6db13087231cdf6113dd85c25746b9b58c3d68e8323 \
+                            size    3169512
 
 set python_version          39
 set python_branch           3.9

@@ -10,7 +10,7 @@ PortGroup                   muniversal 1.0
 name                        gstreamer1-gst-libav
 set my_name                 gst-libav
 # please only commit stable updates (even numbered releases)
-version                     1.18.3
+version                     1.18.4
 description                 This is gst-libav, a set of plug-ins for GStreamer.
 long_description            ${description}
 maintainers                 {gcenx @gcenx}
@@ -22,9 +22,9 @@ master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 distname                    ${my_name}-${version}
 use_xz                      yes
 
-checksums                   rmd160  430ae3b7e7f4fd0a905241d717e53c0700f4d942 \
-                            sha256  ad20546bcd78ac1e7cf194666d73c4f33efeb62647d2b6af22993b540699e91c \
-                            size    279384
+checksums                   rmd160  617a6a33d2d32dcf9a33dfa5a2f34a263eddc64e \
+                            sha256  344a463badca216c2cef6ee36f9510c190862bdee48dc4591c0a430df7e8c396 \
+                            size    281576
 
 set python_version          39
 set python_branch           3.9
