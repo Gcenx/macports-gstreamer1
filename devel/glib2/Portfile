@@ -10,11 +10,12 @@ PortGroup                   muniversal 1.0
 name                        glib2
 conflicts                   glib2-devel
 set my_name                 glib
-version                     2.66.7
+# Only commit even numbered releases
+version                     2.68.0
 revision                    0
-checksums                   rmd160  02df1bc4cd5f42968833c1e09e7179c57b6f47a1 \
-                            sha256  09f158769f6f26b31074e15b1ac80ec39b13b53102dfae66cfe826fb2cc65502 \
-                            size    4844892
+checksums                   rmd160  8843183c417ffe664a935d5ba229af4b5d8328bd \
+                            sha256  67734f584f3a05a2872f57e9a8db38f3b06c7087fb531c5a839d9171968103ea \
+                            size    4938804
 
 set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  devel
@@ -38,7 +39,6 @@ master_sites                gnome:sources/${my_name}/${branch}/
 patchfiles                  libintl.patch \
                             patch-glib_gunicollate.c.diff \
                             patch-gio_xdgmime_xdgmime.c.diff \
-                            patch-gio_gdbusprivate.c.diff \
                             patch-get-launchd-dbus-session-address.diff \
                             patch-meson_build-meson_options-appinfo.diff \
                             patch-meson-build-python-path.diff \
@@ -92,7 +92,7 @@ if {${universal_possible} && [variant_isset universal]} {
 
 post-patch {
     reinplace -W ${worksrcpath} "s|@PYTHON@|${configure.python}|" meson.build
-    reinplace -W ${worksrcpath} "s|@PREFIX@|${prefix}|g" gio/gdbusprivate.c gio/xdgmime/xdgmime.c glib/gi18n-lib.h glib/gi18n.h gio/gdbusaddress.c
+    reinplace -W ${worksrcpath} "s|@PREFIX@|${prefix}|g" gio/xdgmime/xdgmime.c glib/gi18n-lib.h glib/gi18n.h gio/gdbusaddress.c
     reinplace "s|data_dirs = \"/usr|data_dirs = \"${prefix}/share:/usr|g" ${worksrcpath}/glib/gutils.c
     reinplace "s|path = \"/bin|path = \"${prefix}/bin:/bin|g" ${worksrcpath}/glib/gutils.c ${worksrcpath}/glib/gspawn.c    
 }

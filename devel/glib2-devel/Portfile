@@ -10,6 +10,7 @@ PortGroup                   muniversal 1.0
 name                        glib2-devel
 conflicts                   glib2
 set my_name                 glib
+# Only commit odd numbered releases
 version                     2.67.6
 revision                    0
 checksums                   rmd160  89635511f1827555a6d21507b6700356e5c377cf \
