@@ -6,9 +6,10 @@ gstreamer1-gst-plugins-bad 2672
 gstreamer1-gst-plugins-base 3927
 gstreamer1-gst-plugins-good 4726
 gstreamer1-gst-plugins-ugly 5875
-harfbuzz 6806
-harfbuzz-icu 7375
-librsvg 7898
-ffmpeg 8548
-ffmpeg-devel 10367
-pango 12187
+graphene 6806
+harfbuzz 7285
+harfbuzz-icu 7829
+librsvg 8327
+ffmpeg 8977
+ffmpeg-devel 10796
+pango 12616
