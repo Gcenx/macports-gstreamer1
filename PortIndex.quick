@@ -12,4 +12,5 @@ harfbuzz-icu 7829
 librsvg 8327
 ffmpeg 8977
 ffmpeg-devel 10796
-pango 12616
+libheif 12616
+pango 13196
