@@ -6,7 +6,7 @@ PortGroup           compiler_blacklist_versions 1.0
 PortGroup           meson 1.0
 PortGroup           muniversal 1.0
 
-github.setup        ebassi graphene 1.10.4
+github.setup        ebassi graphene 1.10.6
 license             Permissive
 categories          graphics gnome
 maintainers         {gcenx @gcenx}
@@ -17,9 +17,9 @@ description         A thin layer of graphic data types
 
 long_description    ${description}
 
-checksums           rmd160  3bc8b2871d96869befbda87dd7699eccf5511566 \
-                    sha256  a70614e664e9b132564069f52beb320d3a587d1487de95a36614c28d806bbd74 \
-                    size    174636
+checksums           rmd160  a62cf420f926f8407d2cd342e578b33ee9e3f759 \
+                    sha256  81d4d2079546269c364a1b1c8dabad43102384ce5ca52d8f8d9b674b972a6811 \
+                    size    176023
 
 depends_build-append \
                     port:pkgconfig
