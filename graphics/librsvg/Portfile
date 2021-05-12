@@ -5,7 +5,7 @@ PortGroup           gobject_introspection 1.0
 PortGroup           muniversal 1.0
 
 name                librsvg
-version             2.50.3
+version             2.50.5
 revision            0
 license             {GPL-2+ LGPL-2+}
 set branch          [join [lrange [split ${version} .] 0 1] .]
@@ -14,19 +14,19 @@ platforms           darwin
 maintainers         {gcenx @gcenx}
 description         GNOME implementation of rsvg.
 
-long_description    ${description}
+long_description    {*}${description}
 
 homepage            https://wiki.gnome.org/Projects/LibRsvg
 master_sites        gnome:sources/${name}/${branch}/
 use_xz              yes
 
-checksums           rmd160  ada16c7cfcba898443ec16d747845f30c5e3c89f \
-                    sha256  a4298a98e3a95fdd73c858c17d4dd018525fb09dbb13bbd668a0c2243989e958 \
-                    size    18868408
+checksums           rmd160  1d5e3b61021aec39e59a8aa8cbf73a31d23be0b5 \
+                    sha256  32701574c234fed352520c6d0bd5081f728184bc1a9b9c87d423dd27c32b9272 \
+                    size    18958716
 
-depends_build       port:pkgconfig
+depends_build-append port:pkgconfig
 
-depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
+depends_lib-append  path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     path:lib/pkgconfig/cairo.pc:cairo \
                     path:lib/pkgconfig/pango.pc:pango \
                     port:gdk-pixbuf2 \
@@ -36,9 +36,6 @@ depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
 license_noconflict  gobject-introspection \
                     rust \
                     vala
-
-set pyversion       3.8
-depends_run         port:python[join [split ${pyversion} "."] ""]
 
 # cargo does not build on 10.7 or earlier
 # https://trac.macports.org/ticket/55794
@@ -50,15 +47,15 @@ depends_run         port:python[join [split ${pyversion} "."] ""]
 # Caused by:[35] SSL connect error (error:14077410:SSL routines:SSL23_GET_SERVER_HELLO:sslv3 alert handshake failure)
 # https://trac.macports.org/ticket/56195
 
-# rust fails to build on 10.9 and earlier
-# https://trac.macports.org/ticket/56322
-
 # rust @1.30.1 fails to build on 10.10 and earlier
 # https://trac.macports.org/ticket/57768
+# Update - As of rust 1.51.0 it now builds on 10.9 and newer.
 
 # rust does not yet support Apple Silicon
 # https://github.com/rust-lang/rust/issues/73908
 
+# set max_darwin_for_rust 13
+# if {${os.platform} eq "darwin" && (${os.major} < ${max_darwin_for_rust} || ${build_arch} eq "arm64" )} {
 if {${os.platform} eq "darwin" && (${os.major} <= 18 || ${build_arch} eq "arm64" )} {
     # revert to latest pre-cargo version
     version         2.40.20
@@ -69,25 +66,30 @@ if {${os.platform} eq "darwin" && (${os.major} <= 18 || ${build_arch} eq "arm64"
                     sha256  cff4dd3c3b78bfe99d8fcfad3b8ba1eee3289a0823c0e118d78106be6b84c92b \
                     size    1796376
 
-# pre-cargo versions still use libcroco
+    # pre-cargo versions still use libcroco
     depends_lib-append \
                     port:libcroco
 
-# variant viewer disabled by default in an attempt to avoid loading
-# gtk3 by those who are using it strictly as a library outside of GTK+/GNOME.
-# https://trac.macports.org/ticket/43328
-# https://trac.macports.org/ticket/47443
-# https://trac.macports.org/ticket/47596
-
-variant viewer description "Build the rsvg-view-3 viewer utility." {
-    depends_lib-append  port:gtk3
-    depends_run-append  port:adwaita-icon-theme
-}
+    # variant viewer disabled by default in an attempt to avoid loading
+    # gtk3 by those who are using it strictly as a library outside of GTK+/GNOME.
+    # https://trac.macports.org/ticket/43328
+    # https://trac.macports.org/ticket/47443
+    # https://trac.macports.org/ticket/47596
+    variant viewer description "Build the rsvg-view-3 viewer utility." {
+        depends_lib-append  port:gtk3
+        depends_run-append  port:adwaita-icon-theme
+    }
     if {![variant_isset viewer]} {
         patchfiles-append   patch-disable-viewer-pre-cargo.diff
     }
 } else {
     PortGroup       cargo_fetch 1.0
+
+    # Only needed for linkat on macOS 10.9
+    legacysupport.newest_darwin_requires_legacy 13
+    if { ${os.major} <= [option legacysupport.newest_darwin_requires_legacy] } {
+        build.env-append LDFLAGS="${configure.ldflags} [legacysupport::get_library_link_flags]"
+    }
 
     # cargo_fetch appends cargo build dependency
     depends_build-append \
@@ -116,6 +118,7 @@ post-destroot {
     xinstall -m 644 -W ${worksrcpath} AUTHORS COPYING.LIB NEWS \
         ${destroot}${docdir}
 
+    # if {${os.platform} eq "darwin" && ${os.major} < ${max_darwin_for_rust}} {
     if {${os.platform} eq "darwin" && ${os.major} < 15} {
         xinstall -m 644 -W ${worksrcpath} COPYING \
             ${destroot}${docdir}
