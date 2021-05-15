@@ -10,11 +10,11 @@ PortGroup                   muniversal 1.0
 name                        glib2
 conflicts                   glib2-devel
 set my_name                 glib
-version                     2.68.1
+version                     2.68.2
 revision                    0
-checksums                   rmd160  eb9f8c33f97bb6e06d08478753a98a67ae229d1d \
-                            sha256  241654b96bd36b88aaa12814efc4843b578e55d47440103727959ac346944333 \
-                            size    4940260
+checksums                   rmd160  a7fe69f9d7561db0c76336d1b15e088ee6d5b332 \
+                            sha256  ecc7798a9cc034eabdfd7f246e6dd461cdbf1175fcc2e9867cc7da7b7309e0fb \
+                            size    4944192
 
 set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  devel

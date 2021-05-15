@@ -10,8 +10,8 @@ graphene 6806
 harfbuzz 7285
 harfbuzz-icu 7829
 librsvg 8327
-ffmpeg 8977
-ffmpeg-devel 10794
-libheif 12614
-libvpx 13214
-pango 14005
+ffmpeg 8949
+ffmpeg-devel 10766
+libheif 12586
+libvpx 13186
+pango 13977
