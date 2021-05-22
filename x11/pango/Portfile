@@ -11,11 +11,11 @@ name                    pango
 conflicts               pango-devel
 set my_name             pango
 epoch                   1
-version                 1.48.4
+version                 1.48.5
 revision                0
-checksums               rmd160  585e62559eb1c7edc4ff7cbd82e6d05251aa44fb \
-                        sha256  418913fb062071a075846244989d4a67aa5c80bf0eae8ee4555a092fd566a37a \
-                        size    1791332
+checksums               rmd160  881716eea2c65d52829c2633536e4de3563d61f8 \
+                        sha256  501e74496173c02dcd024ded7fbb3f09efd37e2a488e248aa40799424dbb3b2a \
+                        size    1819476
 
 set branch              [join [lrange [split ${version} .] 0 1] .]
 categories              x11
