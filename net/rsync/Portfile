@@ -54,7 +54,7 @@ pre-configure {
 
 # SIMD code throws ICE or is outright unsupported due to lack of support for
 # function multiversioning on older versions of macOS
-if {${os.major} <= 19} {
+if {${os.major} < 19} {
     configure.args-append       --disable-simd
 }
 
