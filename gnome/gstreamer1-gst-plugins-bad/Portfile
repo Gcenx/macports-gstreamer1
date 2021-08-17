@@ -101,7 +101,7 @@ configure.args-append       -Ddc1394=disabled \
                             -Dsrtp=disabled \
                             -Dstatic=disabled \
                             -Dhls-crypto=nettle \
-                            -Dapple_media=disabled
+                            -Dapplemedia=disabled
 
 # port:soundtouch (fails on autoreconf on darwin 8 & 9, see #27533) disable soundtouch on these platforms
 # plugin applemedia (Apple video) now only builds on darwin 14 and later due to use of
