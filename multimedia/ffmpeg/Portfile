@@ -18,7 +18,7 @@ conflicts           ffmpeg-devel
 # Please increase the revision of mpv whenever ffmpeg's version is updated.
 epoch               1
 version             4.4
-revision            0
+revision            2
 license             LGPL-2.1+
 categories          multimedia
 maintainers         {devans @dbevans} {jeremyhu @jeremyhu} openmaintainer
@@ -92,11 +92,12 @@ depends_lib         port:lame \
 
 patchfiles          patch-libavcodec-audiotoolboxenc.c.diff
 
-# work around vec_xl intrinsic does not exist on older PowerPC processors
-# https://trac.ffmpeg.org/ticket/8750
-patchfiles-append   patch-ffmpeg-powerpc-yuv2rgb-altivec-fix.diff
+# fix an upstream bug that overrides the max_b_frames setting
+# https://trac.ffmpeg.org/ticket/9231
+# this bug is fixed upstream in commit 55d9d6767967794edcdd6e1bbd8840fc6f4e9315
+# and should therefore be available in the next release version.
+patchfiles-append   patch-libavcodec-videotoolboxenc.c.diff
 
-#
 # enable auto configure of asm optimizations
 # requires Xcode 3.1 or better on Leopard
 #
@@ -245,7 +246,19 @@ platform powerpc {
     # absence of altivec is not automatically detected
     if {[catch {sysctl hw.vectorunit} result] || $result == 0} {
         configure.args-append --disable-altivec
+
+        # as this machine is a G3, force a local build so we don't download a buildbot-built
+        # version possibly built on a G4+ or cross-compiled from an Intel system
+        archive_sites
     }
+
+    # might be needed for any gcc build...
+    #Undefined symbols:
+    #  "___atomic_fetch_sub_8", referenced from:
+    #      _fifo_thread_dispatch_message.part.4 in fifo.o
+    configure.ldflags-append -latomic
+
+
 }
 
 platform darwin 8 {
@@ -370,66 +383,44 @@ variant nonfree description {enable nonfree code, libraries and binaries will no
 
 if {[variant_isset nonfree]} {
 notes "
-*******
-******* This build of ${name} includes nonfree code as follows:
-*******
-*******     libfdk-aac
-*******
-******* The following libraries and binaries may not be redistributed:
-*******
-*******     ffmpeg
-*******     libavcodec
-*******     libavdevice
-*******     libavfilter
-*******     libavformat
-*******     libavutil
-*******
-******* To remove this restriction remove the variant +nonfree
-*******
+This build of ${name} includes nonfree code as follows:
+  libfdk-aac
+The following libraries and binaries may not be redistributed:
+  ffmpeg
+  libavcodec
+  libavdevice
+  libavfilter
+  libavformat
+  libavutil
+To remove this restriction remove the variant +nonfree
 "
 } elseif {[variant_isset gpl3]} {
 notes "
-*******
-******* This build of ${name} includes GPLed code and
-******* is therefore licensed under GPL v3 or later.
-*******
-******* The following modules are GPLed:
-*******
-*******      postproc
-*******      libsambaclient
-*******      libx264
-*******      libx265
-*******      libxvid
-*******
-******* To include all nonfree, GPLed and LGPL code use variant +nonfree.
-******* To remove nonfree and GPLed code leaving only LGPL code remove the
-******* +gpl2 and +gpl3 variants.
-*******
+This build of ${name} includes GPLed code and is therefore licensed under GPL v3 or later.
+The following modules are GPLed:
+  postproc
+  libsambaclient
+  libx264
+  libx265
+  libxvid
+To include all nonfree, GPLed and LGPL code use variant +nonfree.
+To remove nonfree and GPLed code leaving only LGPL code remove the +gpl2 and +gpl3 variants.
 "
 } elseif {[variant_isset gpl2]} {
 notes "
-*******
-******* This build of ${name} includes GPLed code and
-******* is therefore licensed under GPL v2 or later.
-*******
-******* The following modules are GPLed:
-*******
-*******      postproc
-*******      libx264
-*******      libx265
-*******      libxvid
-*******
-******* To include all nonfree, GPLed and LGPL code use variant +nonfree.
-******* To remove nonfree and GPLed code leaving only LGPL code remove the
-******* +gpl2 variant.
-*******
+This build of ${name} includes GPLed code and is therefore licensed under GPL v2 or later.
+The following modules are GPLed:
+  postproc
+  libx264
+  libx265
+  libxvid
+To include all nonfree, GPLed and LGPL code use variant +nonfree.
+To remove nonfree and GPLed code leaving only LGPL code remove the +gpl2 variant.
 "
 } else {
 notes "
-*******
-******* This build of ${name} includes no GPLed or nonfree
-******* code and is therefore licensed under LGPL v2.1 or later.
-*******
+This build of ${name} includes no GPLed or nonfree code\
+and is therefore licensed under LGPL v2.1 or later.
 "
 }
 
