@@ -10,11 +10,11 @@ PortGroup                   muniversal 1.0
 name                        glib2
 conflicts                   glib2-devel
 set my_name                 glib
-version                     2.68.3
+version                     2.68.4
 revision                    0
-checksums                   rmd160  2e4d20249d9db0c108596db4e7691eb389bb9666 \
-                            sha256  e7e1a3c20c026109c45c9ec4a31d8dcebc22e86c69486993e565817d64be3138 \
-                            size    4945236
+checksums                   rmd160  cf4d834a0e8f5e77ba39d627290ac0263ba0f177 \
+                            sha256  62fd061d08a75492617e625a73e2c05e259f831acbb8e1f8b9c81f23f7993a3b \
+                            size    4945212
 
 set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  devel
@@ -102,6 +102,10 @@ post-patch {
 #post-configure {
 #    system "ed - ${build.dir}/config.h < ${filespath}/config.h.ed"
 #}
+
+configure.checks.implicit_function_declaration.whitelist-append     read \
+                                                                    strcmp \
+                                                                    exit
 
 build.args-append           --verbose
 
