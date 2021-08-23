@@ -150,8 +150,8 @@ platform macosx {
     if {![variant_isset x11] && ![variant_isset universal] && ${os.major} >= 13} {
         # Apple_Media requires CGL, which can only be provided on newer platforms and without X11 enabled.
         require_active_variants port:gstreamer1-gst-plugins-base {} x11
-        configure.args-replace  -Dapple_media=disabled \
-                                -Dapple_media=enabled
+        configure.args-replace  -Dapplemedia=disabled \
+                                -Dapplemedia=enabled
     }
 }
 
