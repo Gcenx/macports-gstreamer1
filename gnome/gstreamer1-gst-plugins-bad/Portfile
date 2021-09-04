@@ -37,35 +37,18 @@ depends_build-append        port:pkgconfig \
 
 depends_lib                 port:gstreamer1-gst-plugins-base \
                             port:gobject-introspection \
-                            port:curl \
+                            port:faac \
                             port:faad2 \
-                            port:fluidsynth \
-                            port:lcms2 \
-                            port:libass \
-                            port:libdca \
-                            port:libde265 \
-                            port:libdvdread \
-                            port:libdvdnav \
-                            port:libexif \
+                            port:libfdk-aac \
+                            port:gettext \
+                            path:include/turbojpeg.h:libjpeg-turbo \
                             port:libmms \
-                            port:libmodplug \
-                            port:libmpcdec \
-                            port:libnice \
-                            port:librsvg \
-                            port:libssh2 \
-                            port:mesa \
-                            port:libGLU \
-                            port:nettle \
-                            port:openal-soft \
-                            port:openexr \
-                            port:openjpeg \
+                            port:libusrsctp \
+                            port:openssl \
+                            port:libopus \
                             port:orc \
                             port:rtmpdump \
-                            port:soundtouch \
-                            port:spandsp-devel \
-                            port:neon \
-                            port:webp \
-                            port:x265
+                            port:libsrtp
 
 configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
 configure.python            ${prefix}/bin/python${python_branch}
@@ -86,22 +69,8 @@ configure.python            ${prefix}/bin/python${python_branch}
 # requires support for C11 (redefinition of typedef ‘GstTestHTTPSrc’ at elements/test_http_src.c:101)
 compiler.c_standard 2011
 
-configure.args-append       -Ddc1394=disabled \
-                            -Dexamples=disabled \
-                            -Dfaac=disabled \
-                            -Dfdk_aac=disabled \
-                            -Dfrei0r=disabled \
-                            -Dintrospection=enabled \
-                            -Dipcpipeline=disabled \
-                            -Dlv2=disabled \
-                            -Dmpeg2enc=disabled \
-                            -Dmplex=disabled \
-                            -Dopencv=disabled \
-                            -Dopus=disabled \
-                            -Dsrtp=disabled \
-                            -Dstatic=disabled \
-                            -Dhls-crypto=nettle \
-                            -Dapplemedia=disabled
+# Disable applemedia reguardless to avoid issues.
+configure.args-append       -Dapplemedia=disabled
 
 # port:soundtouch (fails on autoreconf on darwin 8 & 9, see #27533) disable soundtouch on these platforms
 # plugin applemedia (Apple video) now only builds on darwin 14 and later due to use of
@@ -121,7 +90,7 @@ platform darwin {
     if {${configure.cxx_stdlib} eq "libstdc++"} {
         configure.args-append   -Dchromaprint=disabled
     } else {
-        depends_lib-append      port:chromaprint
+        #depends_lib-append      port:chromaprint
     }
 }
 
@@ -147,11 +116,8 @@ variant x11 {
 }
 
 platform macosx {
-    if {![variant_isset x11] && ![variant_isset universal] && ${os.major} >= 13} {
-        # Apple_Media requires CGL, which can only be provided on newer platforms and without X11 enabled.
+    if {![variant_isset x11]} {
         require_active_variants port:gstreamer1-gst-plugins-base {} x11
-        configure.args-replace  -Dapplemedia=disabled \
-                                -Dapplemedia=enabled
     }
 }
 
