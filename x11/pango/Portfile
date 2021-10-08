@@ -3,7 +3,6 @@
 PortSystem              1.0
 PortGroup               active_variants 1.1
 PortGroup               meson 1.0
-PortGroup               muniversal 1.0
 
 # Please keep the pango and pango-devel ports as similar as possible.
 
@@ -11,11 +10,11 @@ name                    pango
 conflicts               pango-devel
 set my_name             pango
 epoch                   1
-version                 1.49.0
+version                 1.48.10
 revision                0
-checksums               rmd160  606410f9b83a243b26d5fc5755ef936de3311136 \
-                        sha256  9d42177518c95815b11f5c9face419d64c397c7c0fff686eb516e6d4c24e02a8 \
-                        size    2332588
+checksums               rmd160  042c2036057af817a6eecbc98a71b8495d68bd94 \
+                        sha256  21e1f5798bcdfda75eabc4280514b0896ab56f656d4e7e66030b9a2535ecdc98 \
+                        size    2071736
 
 set branch              [join [lrange [split ${version} .] 0 1] .]
 categories              x11
@@ -37,32 +36,26 @@ long_description \
     open-source framework for the layout and rendering \
     of internationalized text.
 
-set python_version          39
-set python_branch           3.9
-
-depends_build-append \
-    port:pkgconfig
-
-depends_lib-append \
+depends_build \
+    port:pkgconfig \
     port:gobject-introspection \
+    port:help2man
+
+depends_lib \
     path:lib/pkgconfig/glib-2.0.pc:glib2 \
     path:lib/pkgconfig/cairo.pc:cairo \
     port:fribidi \
-    port:graphite2 \
-    port:harfbuzz \
-    port:libthai \
-    port:python${python_version}
+    path:lib/pkgconfig/harfbuzz.pc:harfbuzz
 
-configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
-build.env-append            PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
-configure.python            ${prefix}/bin/python${python_branch}
+configure.args-append   -Dxft=disabled \
+                        -Dintrospection=enabled
 
-compiler.cxx_standard 2011
-configure.cxxflags-append -std=c++11
+configure.cflags-append \
+                        -Wno-error,-Wimplicit-fallthrough
 
-configure.args          -Ddefault_library=both \
-                        -Dintrospection=enabled \
-                        -Dxft=disabled
+compiler.cxx_standard   2011
+configure.cxxflags-append \
+                        -std=c++11
 
 license_noconflict      gobject-introspection
 
@@ -86,7 +79,7 @@ platform macosx {
 
 variant x11 {
     depends_lib-append      port:Xft2
-    configure.args-delete   -Dxft=disbled
+    configure.args-replace  -Dxft=disabled -Dxft=enabled
 }
 
 if {${os.platform} ne "darwin" || ${os.subplatform} ne "macosx"} {
@@ -99,18 +92,18 @@ if {[variant_isset x11]} {
     require_active_variants path:lib/pkgconfig/cairo.pc:cairo x11
 }
 
-# gobject-introspection uses g-ir-scanner, which uses $CC from env
-if {![info exists universal_possible]} {
-    set universal_possible [expr {${os.universal_supported} && [llength ${configure.universal_archs}] >= 2}]
+pre-configure {
+    delete ${worksrcpath}/subprojects/glib ${worksrcpath}/subprojects/glib.wrap
+
+    # Fix for issue 56409: pango-view.1 man page not generated
+    delete ${worksrcpath}/pango-view/pango-view.1.in
 }
-if {${universal_possible} && [variant_isset universal]} {
-    foreach arch ${configure.universal_archs} {
-        lappend merger_build_env(${arch})  "CC=${configure.cc} -arch ${arch}"
-        lappend merger_destroot_env(${arch})  "CC=${configure.cc} -arch ${arch}"
-    }
-} else {
-    build.env-append       "CC=${configure.cc} ${configure.cc_archflags}"
-    destroot.env-append    "CC=${configure.cc} ${configure.cc_archflags}"
+
+post-destroot {
+    set docdir ${prefix}/share/doc/${my_name}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} CODING_STYLE.md COPYING NEWS README.md  THANKS \
+        ${destroot}${docdir}
 }
 
 test.run                yes
