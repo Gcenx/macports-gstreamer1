@@ -36,18 +36,41 @@ depends_build-append        port:pkgconfig \
                             port:python${python_version}
 
 depends_lib                 port:gstreamer1-gst-plugins-base \
-                            port:a52dec \
-                            port:libcdio \
-                            port:libdvdread \
                             port:libmpeg2 \
                             port:x264
 
 configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
 configure.python            ${prefix}/bin/python${python_branch}
 
-configure.args-append       -Dstatic=enabled
 
-configure.cflags-append     -funroll-loops -fstrict-aliasing
+# Feature options for plugins without external deps
+configure.args-append       -Dasfdemux=enabled \
+                            -Ddvdlpcmdec=enabled \
+                            -Ddvdsub=disabled \
+                            -Drealmedia=enabled \
+                            -Dxingmux=enabled
+
+# Feature options for plugins that need external deps
+configure.args-append       -Da52dec=disabled \
+                            -Damrnb=disabled \
+                            -Damrwbdec=disabled \
+                            -Dcdio=disabled \
+                            -Ddvdread=disabled \
+                            -Dmpeg2dec=enabled \
+                            -Dsidplay=disabled \
+                            -Dx264=enabled
+
+# Common feature options
+configure.args-append       -Dnls=enabled \
+                            -Dorc=enabled \
+                            -Dtests=disabled \
+                            -Dgobject-cast-checks=disabled \
+                            -Dglib-asserts=disabled \
+                            -Dglib-checks=disabled
+
+# Common options
+configure.args-append       -Ddoc=disabled
+
 
 livecheck.type              regex
 livecheck.url               ${master_sites}

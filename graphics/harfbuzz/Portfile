@@ -3,7 +3,6 @@
 PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
-PortGroup           gobject_introspection 1.0
 
 # Please keep the harfbuzz and harfbuzz-devel ports as similar as possible.
 
@@ -63,10 +62,8 @@ if {${name} eq ${subport}} {
                     --with-freetype \
                     --with-glib \
                     --with-graphite2 \
-                    --with-gobject \
+                    --without-gobject \
                     --without-icu
-
-    gobject_introspection   yes
 
     test.run        yes
     test.target     check

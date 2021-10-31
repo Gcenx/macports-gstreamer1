@@ -91,15 +91,3 @@
    # Handle Solaris variants. Solaris 10 needs -lposix4
    case ${toolchain} in
      sparc-solaris-*)
-@@ -1116,11 +1032,6 @@
-             add_cflags -arch ${tgt_isa}
-             add_ldflags -arch ${tgt_isa}
- 
--            alt_libc="$(show_darwin_sdk_path iphoneos)"
--            if [ -d "${alt_libc}" ]; then
--              add_cflags -isysroot ${alt_libc}
--            fi
--
-             if [ "${LD}" = "${CXX}" ]; then
-               add_ldflags -miphoneos-version-min="${IOS_VERSION_MIN}"
-             else

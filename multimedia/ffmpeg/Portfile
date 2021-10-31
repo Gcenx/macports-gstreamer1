@@ -14,14 +14,15 @@ PortGroup           legacysupport 1.1
 PortGroup           xcode_workaround 1.0
 
 name                ffmpeg
+set my_name         ffmpeg
 conflicts           ffmpeg-devel
 # Please increase the revision of mpv whenever ffmpeg's version is updated.
 epoch               1
-version             4.4
-revision            2
-license             LGPL-2.1+
+version             4.4.1
+revision            3
+license             GPL-2+
 categories          multimedia
-maintainers         {devans @dbevans} {jeremyhu @jeremyhu} openmaintainer
+maintainers         {devans @dbevans} {jeremyhu @jeremyhu} {mascguy @mascguy} openmaintainer
 
 description         FFmpeg is a complete solution to play, record, convert and \
                     stream audio and video.
@@ -57,30 +58,30 @@ long_description    FFmpeg is a complete solution to record, convert and \
 platforms           darwin
 homepage            https://ffmpeg.org/
 master_sites        ${homepage}releases/
-
+distname            ${my_name}-${version}
+dist_subdir         ${my_name}
 use_xz              yes
 
-checksums           rmd160  0169ae4eb185de3a851a9926bc0b3289512c4be0 \
-                    sha256  06b10a183ce5371f915c6bb15b7b1fffbe046e8275099c96affc29e17645d909 \
-                    size    9557868
+checksums           rmd160  ebb1f042b2ba4f13be86339d30522cd73eb6da3e \
+                    sha256  eadbad9e9ab30b25f5520fbfde99fae4a92a1ae3c0257a8d68569a4651e30e02 \
+                    size    9557516
 
 depends_build       port:pkgconfig \
                     port:gmake \
+                    port:cctools \
                     port:texinfo
 
-depends_lib         port:lame \
+depends_lib         port:aom \
+                    port:lame \
+                    port:dav1d \
                     port:libiconv \
                     port:libvorbis \
                     port:libopus \
                     port:libogg \
-                    port:librsvg \
+                    path:lib/pkgconfig/librsvg-2.0.pc:librsvg-devel \
                     port:libtheora \
                     port:libmodplug \
-                    port:libass \
-                    port:libbluray \
                     port:libvpx \
-                    port:gnutls \
-                    port:openjpeg \
                     port:fontconfig \
                     port:freetype \
                     port:fribidi \
@@ -88,6 +89,9 @@ depends_lib         port:lame \
                     port:soxr \
                     port:bzip2 \
                     port:xz \
+                    port:XviD \
+                    port:x264 \
+                    port:x265 \
                     port:zlib
 
 patchfiles          patch-libavcodec-audiotoolboxenc.c.diff
@@ -106,122 +110,59 @@ minimum_xcodeversions {9 3.1}
 # requires a C11 compiler
 compiler.c_standard 2011
 
-if {[lsearch [get_canonical_archs] i386] != -1} {
-    # clang-3.1 hits https://trac.macports.org/ticket/30137 (<rdar://problem/11542429>)
-    # clang-139 hits https://trac.macports.org/ticket/38141
-    compiler.blacklist-append {clang < 422.1.7}
-}
-
+# clang-3.1 hits https://trac.macports.org/ticket/30137 (<rdar://problem/11542429>)
+# clang-139 hits https://trac.macports.org/ticket/38141
 # warning: unknown warning option '-Werror=partial-availability'; did you mean '-Werror=availability'? [-Wunknown-warning-option]
 # warning: unknown warning option '-Wno-bool-operation'; did you mean '-Wno-bool-conversion'? [-Wunknown-warning-option]
 compiler.blacklist-append {clang < 800}
 
-# The old ffmpeg port was GPL-2+ as base and had a no_gpl variant, so this keeps us consistent
-# Also, -gpl2 causes other ports to fail to build due to the missing libpostproc (#35473)
-default_variants-append +gpl2
-
 configure.cflags-append -DHAVE_LRINTF ${configure.cppflags}
-configure.args      --enable-swscale \
+configure.args      --mandir=${prefix}/share/man \
+                    --enable-gpl \
+                    --enable-shared \
+                    --enable-swscale \
+                    --enable-postproc \
                     --enable-avfilter \
                     --enable-avresample \
-                    --enable-libmp3lame \
-                    --enable-libvorbis \
-                    --enable-libopus \
-                    --enable-librsvg \
-                    --enable-libtheora \
-                    --enable-libopenjpeg \
-                    --enable-libmodplug \
-                    --enable-libvpx \
-                    --enable-libsoxr \
-                    --enable-libspeex \
-                    --enable-libass \
-                    --enable-libbluray \
-                    --enable-lzma \
-                    --enable-gnutls \
-                    --enable-fontconfig \
+                    --enable-pthreads \
+                    --disable-indev=jack \
+                    --disable-outdev=xv \
+                    --disable-alsa \
+                    --disable-gcrypt \
+                    --disable-gmp \
+                    --disable-gnutls \
+                    --disable-libass \
+                    --disable-libbluray \
+                    --enable-libdav1d \
+                    --enable-libfontconfig \
                     --enable-libfreetype \
                     --enable-libfribidi \
-                    --disable-libjack \
-                    --disable-libopencore-amrnb \
-                    --disable-libopencore-amrwb \
+                    --enable-libmodplug \
+                    --enable-libmp3lame \
+                    --enable-libopus \
+                    --enable-librsvg \
+                    --enable-libsoxr \
+                    --enable-libspeex \
+                    --enable-libtheora \
+                    --enable-libvorbis \
+                    --enable-libvpx \
+                    --enable-libx264 \
+                    --enable-libx265 \
                     --disable-libxcb \
                     --disable-libxcb-shm \
                     --disable-libxcb-xfixes \
-                    --disable-indev=jack \
-                    --disable-opencl \
-                    --disable-outdev=xv \
-                    --disable-audiotoolbox \
-                    --disable-videotoolbox \
+                    --disable-libxcb-shape \
+                    --enable-libxvid \
+                    --enable-lzma \
+                    --disable-openssl \
+                    --disable-sndio \
                     --disable-sdl2 \
                     --disable-securetransport \
-                    --mandir=${prefix}/share/man \
-                    --enable-shared --enable-pthreads \
+                    --disable-xlib \
+                    --enable-zlib \
+                    --enable-audiotoolbox \
+                    --enable-videotoolbox \
                     --cc=${configure.cc}
-
-
-platform darwin {
-    # disable asm on Tiger
-    # libblueray doesn't build on Tiger so disable for now (#39442)
-    if {${os.major} < 9} {
-        depends_lib-delete    port:libbluray
-        configure.args-replace --enable-libbluray --disable-libbluray
-        configure.args-append --disable-asm
-    }
-
-    # as of 1.6.0 libvpx only supports darwin 10 or later
-    if {${os.major} < 10} {
-        depends_lib-delete port:libvpx
-        configure.args-replace --enable-libvpx --disable-libvpx
-    }
-
-    # filters coreimage and coreimagesrc don't build on 10.6
-    # and earlier due to use of bridged casts in Objective C (#51823)
-    if {${os.major} < 11} {
-        configure.args-append --disable-filter=coreimage \
-                              --disable-filter=coreimagesrc
-    }
-
-    # AudioToolbox support requires CoreMedia Framework available on 10.7+
-    if {${os.major} > 10} {
-        configure.args-replace --disable-audiotoolbox --enable-audiotoolbox
-    }
-
-    if {${os.major} > 9} {
-        # libsdl2 requires minimum Xcode 10.7 SDK to build successfully
-        # but builds on Snow Leopard
-        configure.args-replace --disable-sdl2 --enable-sdl2
-        depends_lib-append     port:libsdl2
-
-        # Dav1d: 10.6+ No PowerPC or Apple Silicon (for now)
-        if {![regexp -all (arm64|ppc*) [get_canonical_archs]]} {
-            configure.args-append   --enable-libdav1d
-            depends_lib-append      port:dav1d
-        }
-    }
-
-    # VideoToolbox, a new hardware acceleration framework, is supported on 10.8+ and "here to stay".
-    # It provides support for H264, H263, MPEG1, MPEG2 and MPEG4.
-    if {${os.major} > 11} {
-        configure.args-replace --disable-videotoolbox --enable-videotoolbox
-    }
-
-    # OpenCL support requires version 1.2 available 10.8+
-    if {${os.major} > 11} {
-        configure.args-replace --disable-opencl --enable-opencl
-    }
-
-    # Apple GCC has problems with SIMD intrinsics and -Werror=no-missing-prototypes.
-    if {${os.major} < 11} {
-        patchfiles-append patch-configure-no-error-on-missing-prototypes.diff
-    }
-
-    # avfoundation is only available on 10.7+
-    # as of ffmpeg 3.4.1 build fails on 10.7 as well
-    # libavdevice/avfoundation.m:207:14: error: expected method to read dictionary element not found on object of type 'NSDictionary *'
-    if {${os.major} < 12} {
-        configure.args-append --disable-indev=avfoundation
-    }
-}
 
 build.cmd           ${prefix}/bin/gmake
 build.env-append    V=1
@@ -242,36 +183,8 @@ post-destroot {
     }
 }
 
-platform powerpc {
-    # absence of altivec is not automatically detected
-    if {[catch {sysctl hw.vectorunit} result] || $result == 0} {
-        configure.args-append --disable-altivec
-
-        # as this machine is a G3, force a local build so we don't download a buildbot-built
-        # version possibly built on a G4+ or cross-compiled from an Intel system
-        archive_sites
-    }
-
-    # might be needed for any gcc build...
-    #Undefined symbols:
-    #  "___atomic_fetch_sub_8", referenced from:
-    #      _fifo_thread_dispatch_message.part.4 in fifo.o
-    configure.ldflags-append -latomic
-
-
-}
-
-platform darwin 8 {
-    post-patch {
-        reinplace "s:,-compatibility_version,$\(LIBMAJOR\)::" ${worksrcpath}/configure
-    }
-}
-
 configure.universal_args-delete --disable-dependency-tracking
 
-if {![info exists universal_possible]} {
-    set universal_possible [expr {${os.universal_supported} && [llength ${configure.universal_archs}] >= 2}]
-}
 if {${universal_possible} && [variant_isset universal]} {
     foreach arch ${configure.universal_archs} {
         set merger_host($arch) ""
@@ -290,85 +203,6 @@ if {${universal_possible} && [variant_isset universal]} {
         depends_build-append port:nasm
         configure.args-append --enable-x86asm
     }
-}
-
-variant x11 {
-#
-# enable x11grab_xcb input device
-#
-    depends_lib-append      port:xorg-libxcb \
-                            port:xorg-libXext \
-                            port:xorg-libXfixes
-
-    configure.args-delete   --disable-libxcb \
-                            --disable-libxcb-shm \
-                            --disable-libxcb-xfixes \
-}
-
-if {[variant_isset x11]} {
-    require_active_variants libsdl2 x11
-} else {
-    require_active_variants libsdl2 "" x11
-}
-
-variant libdc1394 description {Enable IIDC-1394 frame grabbing using libdc1394 (experimental)} {
-    depends_lib-append port:libdc1394
-    configure.args-append --enable-libdc1394
-}
-
-# Allow use of librtmp instead of ffmpeg's internal rtmp implementation
-# May address interoperability issues with CRtmpServer and others
-# https://trac.macports.org/ticket/32219
-# https://groups.google.com/forum/#!topic/c-rtmp-server/ywQPjvciPgc
-# https://trac.ffmpeg.org/ticket/1700
-
-variant librtmp description {Use librtmp (from rtmpdump) as rtmp[t][es]:// protocol handler} {
-    configure.args-append   --enable-librtmp
-
-    depends_lib-append      port:rtmpdump
-}
-
-# x265 currently does not support OS X < 10.6 (#48336, #48338)
-# only enable libx265 support on 10.6 or greater
-
-platform darwin {
-    if {${os.major} > 9 && [variant_isset gpl2]} {
-        configure.args-append   --enable-libx265
-        depends_lib-append      port:x265
-    }
-}
-
-variant jack description {Enable jack library and indev support} {
-# jack will autoconfigure if not disabled
-    depends_lib-append      port:jack
-    configure.args-delete   --disable-libjack \
-                            --disable-indev=jack
-}
-
-variant darwinssl description {Enable https support using Apple built-in TLS library instead of GNU TLS} {
-    configure.args-delete   --disable-securetransport
-    configure.args-delete   --enable-gnutls
-    depends_lib-delete      port:gnutls
-}
-
-variant gpl2 description {Enable GPL code, license will be GPL-2+} {
-    configure.args-append   --enable-gpl \
-                            --enable-postproc \
-                            --enable-libx264 \
-                            --enable-libxvid
-    depends_lib-append      port:XviD \
-                            port:x264
-
-    license                 GPL-2+
-}
-
-variant gpl3 requires gpl2 description {Enable GPL code, license will be GPL-3+} {
-    configure.args-append   --enable-version3 \
-                            --enable-libsmbclient
-
-    depends_lib-append      port:samba3
-
-    license                 GPL-3+
 }
 
 # the build server uses the default variants, and we want distributable binaries
@@ -394,19 +228,7 @@ The following libraries and binaries may not be redistributed:
   libavutil
 To remove this restriction remove the variant +nonfree
 "
-} elseif {[variant_isset gpl3]} {
-notes "
-This build of ${name} includes GPLed code and is therefore licensed under GPL v3 or later.
-The following modules are GPLed:
-  postproc
-  libsambaclient
-  libx264
-  libx265
-  libxvid
-To include all nonfree, GPLed and LGPL code use variant +nonfree.
-To remove nonfree and GPLed code leaving only LGPL code remove the +gpl2 and +gpl3 variants.
-"
-} elseif {[variant_isset gpl2]} {
+} else {
 notes "
 This build of ${name} includes GPLed code and is therefore licensed under GPL v2 or later.
 The following modules are GPLed:
@@ -417,13 +239,8 @@ The following modules are GPLed:
 To include all nonfree, GPLed and LGPL code use variant +nonfree.
 To remove nonfree and GPLed code leaving only LGPL code remove the +gpl2 variant.
 "
-} else {
-notes "
-This build of ${name} includes no GPLed or nonfree code\
-and is therefore licensed under LGPL v2.1 or later.
-"
 }
 
 livecheck.type      regex
 livecheck.url       ${master_sites}
-livecheck.regex     "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"
+livecheck.regex     "${my_name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

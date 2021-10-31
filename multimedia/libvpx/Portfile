@@ -5,10 +5,10 @@ PortGroup           compiler_blacklist_versions 1.0
 PortGroup           muniversal 1.0
 
 name                libvpx
-version             1.10.0
-revision            1
+version             1.11.0
+revision            0
 categories          multimedia
-maintainers         {devans @dbevans} openmaintainer
+maintainers         {gcenx @gcenx}
 platforms           darwin
 license             Permissive
 
@@ -64,9 +64,6 @@ if {"${configure.sdkroot}" eq ""} {
     configure.sdkroot "/"
 }
 
-if {![info exists universal_possible]} {
-    set universal_possible [expr {${os.universal_supported} && [llength ${configure.universal_archs}] >= 2}]
-}
 if {${universal_possible} && [variant_isset universal]} {
 
     # universal build using muniversal portgroup
@@ -125,8 +122,9 @@ if {${universal_possible} && [variant_isset universal]} {
 # shared library uses relative path in install name
 # override with absolute path
 post-destroot {
-    set libname ${prefix}/lib/${name}.6.dylib
-    system "install_name_tool -id ${libname} ${destroot}${libname}"
+    foreach f [glob ${destroot}${prefix}/lib/${name}.*.dylib] {
+        system "install_name_tool -id [string map [list ${destroot} ""] ${f}] ${f}"
+    }
 }
 
 livecheck.type  regex

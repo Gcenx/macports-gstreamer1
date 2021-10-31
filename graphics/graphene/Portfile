@@ -24,8 +24,7 @@ checksums           rmd160  a62cf420f926f8407d2cd342e578b33ee9e3f759 \
 depends_build-append \
                     port:pkgconfig
 
-depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
-                    port:gobject-introspection
+depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2
 
 # __GNUC__ is unreliable indicator of SSE existence on macOS
 patchfiles-append   patch-meson.build.diff
@@ -51,6 +50,7 @@ configure.cflags-append \
 
 configure.args-append \
                     -Dtests=false \
+                    -Dintrospection=disabled \
                     -Dbenchmarks=false
 
 if {${build_arch} eq "arm64"} {
@@ -61,9 +61,6 @@ if {${build_arch} eq "arm64"} {
     supported_archs     ppc ppc64
 }
 
-if {![info exists universal_possible]} {
-    set universal_possible [expr {${os.universal_supported} && [llength ${configure.universal_archs}] >= 2}]
-}
 # gobject-introspection uses g-ir-scanner, which uses $CC from env
 if {${universal_possible} && [variant_isset universal]} {
     foreach arch ${configure.universal_archs} {

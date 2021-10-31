@@ -86,22 +86,35 @@ configure.python            ${prefix}/bin/python${python_branch}
 # requires support for C11 (redefinition of typedef ‘GstTestHTTPSrc’ at elements/test_http_src.c:101)
 compiler.c_standard 2011
 
-configure.args-append       -Ddc1394=disabled \
-                            -Dexamples=disabled \
+configure.args-append       -Dfbdev=disabled \
+                            -Ddecklink=disabled \
+                            -Dcurl=disabled \
+                            -Dcurl-ssh2=disabled \
+                            -Dlinksys=disabled \
+                            -Dstatic=disabled \
+                            -Ddts=disabled \
                             -Dfaac=disabled \
-                            -Dfdk_aac=disabled \
-                            -Dfrei0r=disabled \
-                            -Dintrospection=enabled \
-                            -Dipcpipeline=disabled \
-                            -Dlv2=disabled \
+                            -Dfaad=disabled \
+                            -Dlibmms=disabled \
                             -Dmpeg2enc=disabled \
                             -Dmplex=disabled \
+                            -Dneon=disabled \
+                            -Drtmp=disabled \
+                            -Dflite=disabled \
+                            -Dvulkan=disabled \
+                            -Dsbc=disabled \
                             -Dopencv=disabled \
-                            -Dopus=disabled \
-                            -Dsrtp=disabled \
-                            -Dstatic=disabled \
-                            -Dhls-crypto=nettle \
-                            -Dapplemedia=disabled
+                            -Dvoamrwbenc=disabled \
+                            -Dx265=disabled \
+                            -Dexamples=disabled \
+                            -Dtests=disabled \
+                            -Dgtk_doc=disabled \
+                            -Dintrospection=disabled \
+                            -Dgobject-cast-checks=disabled \
+                            -Dglib-asserts=disabled \
+                            -Dglib-checks=disabled \
+                            -Dnls=disabled \
+                            -Dbenchmarks=disabled
 
 # port:soundtouch (fails on autoreconf on darwin 8 & 9, see #27533) disable soundtouch on these platforms
 # plugin applemedia (Apple video) now only builds on darwin 14 and later due to use of
@@ -156,9 +169,6 @@ platform macosx {
 }
 
 # gobject-introspection uses g-ir-scanner, which uses $CC from env
-if {![info exists universal_possible]} {
-    set universal_possible [expr {${os.universal_supported} && [llength ${configure.universal_archs}] >= 2}]
-}
 if {${universal_possible} && [variant_isset universal]} {
     foreach arch ${configure.universal_archs} {
         lappend merger_build_env(${arch})  "CC=${configure.cc} -arch ${arch}"

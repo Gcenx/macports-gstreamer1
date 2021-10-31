@@ -37,98 +37,106 @@ depends_build-append        port:pkgconfig \
                             port:python${python_version}
 
 depends_lib                 port:gstreamer1-gst-plugins-base \
-                            port:aalib \
-                            path:lib/pkgconfig/cairo.pc:cairo \
-                            port:flac \
-                            port:gdk-pixbuf2 \
-                            path:include/turbojpeg.h:libjpeg-turbo \
-                            port:lame \
-                            path:lib/libcaca.dylib:libcaca \
-                            port:libdv \
-                            port:libpng \
-                            port:libshout2 \
-                            port:libsoup \
-                            path:lib/libspeex.dylib:speex \
-                            port:libvpx \
                             port:mpg123 \
-                            port:orc \
-                            port:taglib \
-                            port:twolame \
-                            port:wavpack
+                            port:orc
 
 configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
 configure.python            ${prefix}/bin/python${python_branch}
 
-    configure.args-append   -Dgtk-doc=disabled \
-                            -Dexamples=disabled \
+
+# Feature options for plugins without external deps
+configure.args-append       -Dalpha=enabled \
+                            -Dapetag=enabled \
+                            -Daudiofx=enabled \
+                            -Daudioparsers=enabled \
+                            -Dauparse=enabled \
+                            -Dautodetect=enabled \
+                            -Davi=enabled \
+                            -Dcutter=enabled \
+                            -Ddebugutils=disabled \
+                            -Ddeinterlace=enabled \
+                            -Ddtmf=disabled \
+                            -Deffectv=enabled \
+                            -Dequalizer=enabled \
+                            -Dflv=enabled \
+                            -Dflx=enabled \
+                            -Dgoom=enabled \
+                            -Dgoom2k1=enabled \
+                            -Dicydemux=enabled \
+                            -Did3demux=enabled \
+                            -Dimagefreeze=enabled \
+                            -Dinterleave=enabled \
+                            -Disomp4=enabled \
+                            -Dlaw=enabled \
+                            -Dlevel=enabled \
+                            -Dmatroska=enabled \
+                            -Dmonoscope=enabled \
+                            -Dmultifile=enabled \
+                            -Dmultipart=enabled \
+                            -Dreplaygain=enabled \
+                            -Drtp=enabled \
+                            -Drtpmanager=enabled \
+                            -Drtsp=enabled \
+                            -Dshapewipe=enabled \
+                            -Dsmpte=enabled \
+                            -Dspectrum=enabled \
+                            -Dudp=enabled \
+                            -Dvideobox=enabled \
+                            -Dvideocrop=enabled \
+                            -Dvideomixer=enabled \
+                            -Dwavenc=enabled \
+                            -Dy4m=enabled
+
+# Feature options for plugins with external deps
+configure.args-append       -Daalib=disabled \
+                            -Dbz2=disabled \
+                            -Dcairo=disabled \
+                            -Ddirectsound=enabled \
+                            -Ddv=disabled \
+                            -Ddv1394=disabled \
+                            -Dflac=disabled \
+                            -Dgdk-pixbuf=disabled \
                             -Dgtk3=disabled \
                             -Djack=disabled \
+                            -Djpeg=disabled \
+                            -Dlame=disabled \
+                            -Dlibcaca=disabled \
+                            -Dmpg123=enabled \
+                            -Doss=disabled \
+                            -Doss4=disabled \
+                            -Dosxaudio=disabled \
+                            -Dosxvideo=disabled \
+                            -Dpng=disabled \
                             -Dpulse=disabled \
-                            -Dqt=disabled \
-                            -Dx=disabled
+                            -Dqt5=disabled \
+                            -Dshout2=disabled \
+                            -Dsoup=disabled \
+                            -Dspeex=disabled \
+                            -Dtaglib=disabled \
+                            -Dtwolame=disabled \
+                            -Dvpx=disabled \
+                            -Dwaveform=disabled \
+                            -Dwavpack=disabled
+
+# ximagesrc plugin options
+configure.args-append       -Dximagesrc=disabled
+
+# v4l2 plugin options (Linux only)
+configure.args-append       -Dv4l2=disabled
+
+# Common feature options
+configure.args-append       -Dexamples=disabled \
+                            -Dtests=disabled \
+                            -Dnls=disabled \
+                            -Dorc=enabled \
+                            -Dgobject-cast-checks=disabled \
+                            -Dglib-asserts=disabled \
+                            -Dglib-checks=disabled
+
+# Common options
+configure.args-append       -Ddoc=disabled
 
 configure.env-append        "HAVE_CXX=yes"
-
-platform darwin {
-    if {${os.major} < 10} {
-        # gstosxcoreaudio.c:419:28: error: use of undeclared identifier 'kLinearPCMFormatFlagsSampleFractionMask'
-        configure.args-append -Dosx_audio=disabled
-        # osx_video requires darwin 10 or later (see configure.ac)
-        configure.args-append -Dosx_video=disabled
-        # as of 1.6.0 libvpx only supports darwin 10 or later
-        depends_lib-delete port:libvpx
-        configure.args-append -Dvpx=disabled
-    }
-}
-
-variant gtk3 description {Enable GTK3 windowing elements} {
-    depends_lib-append      port:gtk3
-    configure.args-replace  -Dgtk3=disabled \
-                            -Dgtk3=enabled
-}
-
-variant jack description {Enable Jack plugin} {
-    depends_lib-append      port:jack
-    configure.args-replace  -Djack=disabled \
-                            -Djack=enabled
-}
-
-variant pulseaudio description {Enable PulseAudio plugin} {
-    depends_lib-append      port:pulseaudio
-    configure.args-replace  -Dpulse=disabled \
-                            -Dpulse=enabled
-}
-
-variant x11 {
-    depends_lib-append      port:xorg-libX11 \
-                            port:xorg-libXfixes \
-                            port:xorg-libXdamage \
-                            port:xorg-libXext
-    configure.args-append   -Ddefault-videosink=ximagesink
-    configure.args-replace  -Dx=disabled \
-                            -Dx=enabled
-}
-
-variant qt description {Enable QT5 MAC windowing elements } {
-    PortGroup               qt5 1.0
-
-    qt5.depends_component   qtdeclarative \
-                            qtmacextras
-
-    configure.args-replace  -Dqt=disabled \
-                            -Dqt=enabled
-
-    # avoid:
-    #    ${prefix}/libexec/qt5/include/QtCore/qcompilerdetection.h:562:6: error: Qt requires a C++11 compiler and yours does not seem to be that.
-    compiler.cxx_standard   2011
-    configure.cxxflags-append -std=c++11
-}
-
-# SSE register return with SSE disabled
-# <rdar://problem/9694837> - Fixed in Xcode 4.2 (clang 211.10.1)
-# blacklist compilers that don't support C11 typedef redefinition
-# gstflvmux.h:73: error: redefinition of typedef ‘GstFlvMuxPadClass’
-compiler.c_standard         2011
 
 livecheck.type              regex
 livecheck.url               ${master_sites}

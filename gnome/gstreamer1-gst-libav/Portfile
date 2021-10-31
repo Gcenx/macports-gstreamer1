@@ -34,35 +34,12 @@ depends_build-append        port:pkgconfig \
                             port:nasm
 
 depends_lib-append          port:gstreamer1-gst-plugins-base \
-                            port:gobject-introspection \
                             port:ffmpeg
 
 configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
 configure.python            ${prefix}/bin/python${python_branch}
 
-if {[lsearch [get_canonical_archs] i386] != -1} {
-    # clang-139 hits https://trac.macports.org/ticket/38141
-    compiler.blacklist-append {clang < 422.1.7}
-
-    # https://trac.macports.org/ticket/37802
-    compiler.blacklist-append gcc-4.2 apple-gcc-4.2 llvm-gcc-4.2 macports-llvm-gcc-4.2
-}
-
-configure.args-append       -Dintrospection=enabled
-
-# gobject-introspection uses g-ir-scanner, which uses $CC from env
-if {![info exists universal_possible]} {
-    set universal_possible [expr {${os.universal_supported} && [llength ${configure.universal_archs}] >= 2}]
-}
-if {${universal_possible} && [variant_isset universal]} {
-    foreach arch ${configure.universal_archs} {
-        lappend merger_build_env(${arch})  "CC=${configure.cc} -arch ${arch}"
-        lappend merger_destroot_env(${arch})  "CC=${configure.cc} -arch ${arch}"
-    }
-} else {
-    build.env-append       "CC=${configure.cc} ${configure.cc_archflags}"
-    destroot.env-append    "CC=${configure.cc} ${configure.cc_archflags}"
-}
+configure.args-append       -Ddoc=disabled
 
 livecheck.type              regex
 livecheck.url               ${master_sites}

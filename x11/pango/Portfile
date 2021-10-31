@@ -39,7 +39,6 @@ long_description \
 
 depends_build \
     port:pkgconfig \
-    port:gobject-introspection \
     port:help2man
 
 depends_lib \
@@ -51,7 +50,7 @@ depends_lib \
 patchfiles              pango-tiger-no-coretext.diff
 
 configure.args-append   -Dxft=disabled \
-                        -Dintrospection=enabled
+                        -Dintrospection=disabled
 
 configure.cflags-append \
                         -Wno-error,-Wimplicit-fallthrough
