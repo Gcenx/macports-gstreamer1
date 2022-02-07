@@ -9,7 +9,7 @@ PortGroup                   muniversal 1.0
 name                        gstreamer1
 set my_name                 gstreamer
 # please only commit stable updates (even numbered releases)
-version                     1.18.4
+version                     1.18.5
 description                 GStreamer is a library for constructing graphs of media-handling components.
 long_description            The applications it supports range from simple Ogg/Vorbis playback, audio/video \
                             streaming to complex audio (mixing) and video (non-linear editing) processing.
@@ -19,28 +19,27 @@ platforms                   darwin
 license                     LGPL-2+
 homepage                    https://${my_name}.freedesktop.org/
 distname                    ${my_name}-${version}
+use_xz                      yes
 
 master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 
-use_xz                      yes
+checksums                   rmd160  5a9bb876ad24998d11baf2e61d5ab058f0385dd5 \
+                            sha256  55862232a63459bbf56abebde3085ca9aec211b478e891dacea4d6df8cafe80a \
+                            size    2710712
 
-checksums                   rmd160  ec0c7f2163651ba43b246de1ec8bcccea1af6aa1 \
-                            sha256  9aeec99b38e310817012aa2d1d76573b787af47f8a725a65b833880a094dfbc5 \
-                            size    2703948
-
-set python_version          39
-set python_branch           3.9
+set py_ver                  3.9
+set py_ver_nodot            [string map {. {}} ${py_ver}]
 
 depends_build-append        port:bison \
                             port:gettext \
                             port:pkgconfig \
-                            port:python${python_version}
+                            port:python${py_ver_nodot}
 
 depends_lib-append          port:gettext-runtime \
                             path:lib/pkgconfig/glib-2.0.pc:glib2
 
-configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
-configure.python            ${prefix}/bin/python${python_branch}
+configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
+configure.python            ${prefix}/bin/python${py_ver}
 
 
 configure.args-append       -Dgst_debug=true \
@@ -72,7 +71,6 @@ configure.args-append       -Dexamples=disabled \
 
 # Common options
 configure.args-append       -Ddoc=disabled
-
 
 test.run                    yes
 test.target                 check

@@ -5,36 +5,36 @@ PortGroup                   meson 1.0
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=636134
 PortGroup                   muniversal 1.0
-PortGroup                   active_variants 1.1
 
 name                        gstreamer1-gst-plugins-bad
 set my_name                 gst-plugins-bad
 # please only commit stable updates (even numbered releases)
-version                     1.18.4
+version                     1.18.5
 description                 A set of plug-ins for GStreamer that need more quality.
 long_description            GStreamer Bad Plug-ins is a set of plug-ins that aren't up to par compared \
                             to the rest. They might be close to being good quality, but they're missing \
                             something - be it a good code review, some documentation, a set of tests, a \
                             real live maintainer, or some actual wide use.
-license                     GPL LGPL
 maintainers                 {gcenx @gcenx}
 categories                  gnome
 platforms                   darwin
+license                     GPL LGPL
 homepage                    https://gstreamer.freedesktop.org/modules/${my_name}.html
-master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 distname                    ${my_name}-${version}
 use_xz                      yes
 
-checksums                   rmd160  b53cd88e800b18bc7a6a57de30e03b6c30e2fe83 \
-                            sha256  74e806bc5595b18c70e9ca93571e27e79dfb808e5d2e7967afa952b52e99c85f \
-                            size    5640292
+master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 
-set python_version          39
-set python_branch           3.9
+checksums                   rmd160  b7a024264eba9a915e2c73a0532e5092a58b8d9a \
+                            sha256  a164923b94f0d08578a6fcaeaac6e0c05da788a46903a1086870e9ca45ad678e \
+                            size    5649536
+
+set py_ver                  3.9
+set py_ver_nodot            [string map {. {}} ${py_ver}]
 
 depends_build-append        port:gettext \
                             port:pkgconfig \
-                            port:python${python_version}
+                            port:python${py_ver_nodot}
 
 depends_lib                 port:gstreamer1-gst-plugins-base \
                             port:faac \
@@ -51,8 +51,8 @@ depends_lib                 port:gstreamer1-gst-plugins-base \
                             port:libsrtp \
                             port:x265
 
-configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
-configure.python            ${prefix}/bin/python${python_branch}
+configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
+configure.python            ${prefix}/bin/python${py_ver}
 
 #
 # could depend on tons for multimedia stuff +variants
@@ -102,15 +102,6 @@ configure.args-append       -Dapplemedia=disabled \
                             -Dglib-checks=disabled \
                             -Dnls=disabled \
                             -Dbenchmarks=disabled
-
-configure.cppflags-append   "-L${prefix}/lib"
-configure.cflags-append     -std=c99 -funroll-loops -fstrict-aliasing
-configure.env-append        "HAVE_CXX=yes"
-
-# Window system is provided by gstreamer1-gst-plugins-base, so sync up.
-variant x11 {
-    require_active_variants port:gstreamer1-gst-plugins-base x11
-}
 
 livecheck.type              regex
 livecheck.url               ${master_sites}

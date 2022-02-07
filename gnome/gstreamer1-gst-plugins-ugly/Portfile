@@ -9,7 +9,7 @@ PortGroup                   muniversal 1.0
 name                        gstreamer1-gst-plugins-ugly
 set my_name                 gst-plugins-ugly
 # please only commit stable updates (even numbered releases)
-version                     1.18.4
+version                     1.18.5
 description                 A set of good-quality plug-ins for GStreamer that might pose distribution \
                             problems.
 long_description            GStreamer Ugly Plug-ins is a set of plug-ins that have good quality and \
@@ -19,28 +19,29 @@ long_description            GStreamer Ugly Plug-ins is a set of plug-ins that ha
 maintainers                 {gcenx @gcenx}
 categories                  gnome
 platforms                   darwin
-homepage                    https://gstreamer.freedesktop.org/modules/${my_name}.html
-master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
-distname                    ${my_name}-${version}
 license                     GPL-2+ LGPL-2+
+homepage                    https://gstreamer.freedesktop.org/modules/${my_name}.html
+distname                    ${my_name}-${version}
 use_xz                      yes
 
-checksums                   rmd160  a640c89112085222d1c86be9678ee1d892491604 \
-                            sha256  218df0ce0d31e8ca9cdeb01a3b0c573172cc9c21bb3d41811c7820145623d13c \
-                            size    509920
+master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 
-set python_version          39
-set python_branch           3.9
+checksums                   rmd160  45452f4fc293792413e678c2951651daaba81616 \
+                            sha256  df32803e98f8a9979373fa2ca7e05e62f977b1097576d3a80619d9f5c69f66d9 \
+                            size    513780
+
+set py_ver                  3.9
+set py_ver_nodot            [string map {. {}} ${py_ver}]
 
 depends_build-append        port:pkgconfig \
-                            port:python${python_version}
+                            port:python${py_ver_nodot}
 
 depends_lib                 port:gstreamer1-gst-plugins-base \
                             port:libmpeg2 \
                             port:x264
 
-configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
-configure.python            ${prefix}/bin/python${python_branch}
+configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
+configure.python            ${prefix}/bin/python${py_ver}
 
 
 # Feature options for plugins without external deps
@@ -70,7 +71,6 @@ configure.args-append       -Dnls=enabled \
 
 # Common options
 configure.args-append       -Ddoc=disabled
-
 
 livecheck.type              regex
 livecheck.url               ${master_sites}

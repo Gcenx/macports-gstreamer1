@@ -2,7 +2,6 @@
 
 PortSystem                  1.0
 PortGroup                   meson 1.0
-PortGroup                   compiler_blacklist_versions 1.0
 
 # https://bugzilla.gnome.org/show_bug.cgi?id=636134
 PortGroup                   muniversal 1.0
@@ -10,34 +9,35 @@ PortGroup                   muniversal 1.0
 name                        gstreamer1-gst-libav
 set my_name                 gst-libav
 # please only commit stable updates (even numbered releases)
-version                     1.18.4
+version                     1.18.5
 description                 This is gst-libav, a set of plug-ins for GStreamer.
 long_description            ${description}
 maintainers                 {gcenx @gcenx}
 categories                  gnome
-license                     GPL-2+
 platforms                   darwin
+license                     GPL-2+
 homepage                    https://gstreamer.freedesktop.org/
-master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 distname                    ${my_name}-${version}
 use_xz                      yes
 
-checksums                   rmd160  617a6a33d2d32dcf9a33dfa5a2f34a263eddc64e \
-                            sha256  344a463badca216c2cef6ee36f9510c190862bdee48dc4591c0a430df7e8c396 \
-                            size    281576
+master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 
-set python_version          39
-set python_branch           3.9
+checksums                   rmd160  831d0bdd2e156007364591cb7c70b1d001d85e24 \
+                            sha256  822e008a910e9dd13aedbdd8dc63fedef4040c0ee2e927bab3112e9de693a548 \
+                            size    285416
+
+set py_ver                  3.9
+set py_ver_nodot            [string map {. {}} ${py_ver}]
 
 depends_build-append        port:pkgconfig \
-                            port:python${python_version} \
+                            port:python${py_ver_nodot} \
                             port:nasm
 
 depends_lib-append          port:gstreamer1-gst-plugins-base \
                             port:ffmpeg
 
-configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${python_branch}/bin:$env(PATH)
-configure.python            ${prefix}/bin/python${python_branch}
+configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
+configure.python            ${prefix}/bin/python${py_ver}
 
 configure.args-append       -Ddoc=disabled
 
