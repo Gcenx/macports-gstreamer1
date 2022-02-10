@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        mesonbuild meson 0.59.1
-revision            2
+github.setup        mesonbuild meson 0.61.1
+revision            0
 
 github.tarball_from releases
 license             Apache-2
 categories          devel python
-maintainers         {soap.za.net:git @SoapZA} openmaintainer
+maintainers         {gcenx @gcenx}
 platforms           darwin
 supported_archs     noarch
 installs_libs       no
@@ -23,14 +23,13 @@ long_description    Meson is a build system designed to optimize programmer prod
                     Valgrind, CCache and the like. It is both extremely fast, and, even more importantly, \
                     as user friendly as possible.
 
-checksums           rmd160  2f7977dd49fe7e4b24e465013e83a4182fba4d79 \
-                    sha256  db586a451650d46bbe10984a87b79d9bcdc1caebf38d8e189f8848f8d502356d \
-                    size    1944678
+checksums           rmd160  29cd4b4c8402acd37ba8d8ca465c9be8ea541410 \
+                    sha256  feb2cefb325b437dbf36146df7c6b87688ddff0b0205caa31dc64055c6da410c \
+                    size    2009680
 
-# as of verison 0.45.0,requires python 3.5 or better
-
-python.versions         36 37 38 39
-python.default_version  39
+# as of verison 0.57.0, requires python 3.6 or later
+python.versions         36 37 38 39 310
+python.default_version  310
 python.link_binaries    no
 
 depends_build-append \
@@ -54,9 +53,6 @@ if {${os.platform} eq "darwin" && ${os.major} <= 10} {
 # https://github.com/mesonbuild/meson/issues/6187
 patchfiles-append   patch-meson-32bit-apple.diff
 
-# https://github.com/mesonbuild/meson/pull/9211
-patchfiles-append   patch-meson-gcc-appleframeworks.diff
-
 # Compiled typelib files need their dylibs' full install path
 patchfiles-append   patch-meson-gnome.diff
 
@@ -67,9 +63,6 @@ if {${os.platform} eq "darwin" && ${os.major} <= 13} {
     patchfiles-append   patch-meson-clang-unknown-optimization-error.diff
 }
 
-# https://trac.macports.org/ticket/63462
-patchfiles-append    patch-meson-objc-accept-gnu89.diff
-
 platform darwin 8 {
 
     # this meson is modified for systems without @rpath support
@@ -77,7 +70,7 @@ platform darwin 8 {
 
     github.setup        mesonbuild meson 0.58.2
     github.tarball_from releases
-    revision            0
+    revision            1
     checksums           rmd160  252d6261d3b8ecad345b1f966f8cfc60b52da6e1 \
                         sha256  7634ec32955d3f897d623b88e9d2988451035f43d73c17a29caf767387baedb7 \
                         size    1899464
