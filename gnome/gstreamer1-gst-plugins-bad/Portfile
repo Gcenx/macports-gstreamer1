@@ -39,7 +39,6 @@ depends_lib                 port:gstreamer1-gst-plugins-base \
                             path:include/turbojpeg.h:libjpeg-turbo \
                             port:libmms \
                             port:libusrsctp \
-                            port:openssl \
                             port:libopus \
                             port:orc \
                             port:rtmpdump \
