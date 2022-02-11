@@ -9,7 +9,7 @@ PortGroup                   muniversal 1.0
 name                        gstreamer1
 set my_name                 gstreamer
 # please only commit stable updates (even numbered releases)
-version                     1.18.5
+version                     1.18.6
 description                 GStreamer is a library for constructing graphs of media-handling components.
 long_description            The applications it supports range from simple Ogg/Vorbis playback, audio/video \
                             streaming to complex audio (mixing) and video (non-linear editing) processing.
@@ -23,9 +23,9 @@ use_xz                      yes
 
 master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 
-checksums                   rmd160  5a9bb876ad24998d11baf2e61d5ab058f0385dd5 \
-                            sha256  55862232a63459bbf56abebde3085ca9aec211b478e891dacea4d6df8cafe80a \
-                            size    2710712
+checksums                   rmd160  6384d6a1d0052c5ca6f90fde64db185609fc0057 \
+                            sha256  4ec816010dd4d3a93cf470ad0a6f25315f52b204eb1d71dfa70ab8a1c3bd06e6 \
+                            size    2713892
 
 depends_build-append        port:bison \
                             port:gettext
