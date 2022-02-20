@@ -138,7 +138,6 @@ configure.args      --mandir=${prefix}/share/man \
                     --enable-libmodplug \
                     --enable-libmp3lame \
                     --enable-libopus \
-                    --disabled-librsvg \
                     --enable-libsoxr \
                     --enable-libspeex \
                     --enable-libtheora \
