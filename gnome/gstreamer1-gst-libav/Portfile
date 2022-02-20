@@ -31,8 +31,6 @@ depends_build-append        port:nasm
 depends_lib-append          port:gstreamer1-gst-plugins-base \
                             port:ffmpeg
 
-configure.args-append       -Ddoc=disabled
-
 livecheck.type              regex
 livecheck.url               ${master_sites}
 livecheck.regex             "${my_name}-(\\d+\\\.\\d*\[02468\](?:\\.\\d+)*)${extract.suffix}"

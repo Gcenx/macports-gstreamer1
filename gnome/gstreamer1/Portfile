@@ -59,9 +59,6 @@ configure.args-append       -Dexamples=disabled \
                             -Dglib-checks=disabled \
                             -Dextra-checks=disabled
 
-# Common options
-configure.args-append       -Ddoc=disabled
-
 test.run                    yes
 test.target                 check
 
