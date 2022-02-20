@@ -51,6 +51,9 @@ configure.args-append       -Da52dec=disabled \
                             -Dsidplay=disabled \
                             -Dx264=enabled
 
+# License-related feature options
+configure.args-append       -Dgpl=enabled
+
 # Common feature options
 configure.args-append       -Dnls=enabled \
                             -Dorc=enabled \
