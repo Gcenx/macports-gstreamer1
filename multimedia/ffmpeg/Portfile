@@ -77,7 +77,6 @@ depends_lib         port:aom \
                     port:libvorbis \
                     port:libopus \
                     port:libogg \
-                    path:lib/pkgconfig/librsvg-2.0.pc:librsvg-devel \
                     port:libtheora \
                     port:libmodplug \
                     port:libvpx \
@@ -139,7 +138,7 @@ configure.args      --mandir=${prefix}/share/man \
                     --enable-libmodplug \
                     --enable-libmp3lame \
                     --enable-libopus \
-                    --enable-librsvg \
+                    --disabled-librsvg \
                     --enable-libsoxr \
                     --enable-libspeex \
                     --enable-libtheora \
