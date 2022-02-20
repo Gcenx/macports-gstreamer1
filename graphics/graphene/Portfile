@@ -47,8 +47,7 @@ configure.cflags-append \
 
 configure.args-append \
                     -Dtests=false \
-                    -Dintrospection=disabled \
-                    -Dbenchmarks=false
+                    -Dintrospection=disabled
 
 if {${build_arch} eq "arm64"} {
     supported_archs     arm64
