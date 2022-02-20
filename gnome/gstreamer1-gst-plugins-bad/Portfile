@@ -37,7 +37,6 @@ depends_lib                 port:gstreamer1-gst-plugins-base \
                             port:libfdk-aac \
                             port:gettext-runtime \
                             path:include/turbojpeg.h:libjpeg-turbo \
-                            port:libmms \
                             port:libusrsctp \
                             port:libopus \
                             port:orc \
@@ -67,13 +66,10 @@ configure.args-append       -Dapplemedia=disabled \
                             -Dchromaprint=disabled \
                             -Dcurl=disabled \
                             -Dcurl-ssh2=disabled \
-                            -Dlinksys=disabled \
-                            -Dstatic=disabled \
                             -Ddts=disabled \
                             -Dfaac=enabled \
                             -Dfaad=enabled \
                             -Dfdkaac=enabled \
-                            -Dlibmms=disabled \
                             -Dmpeg2enc=disabled \
                             -Dmplex=disabled \
                             -Dneon=disabled \
@@ -90,8 +86,10 @@ configure.args-append       -Dapplemedia=disabled \
                             -Dgobject-cast-checks=disabled \
                             -Dglib-asserts=disabled \
                             -Dglib-checks=disabled \
-                            -Dnls=disabled \
-                            -Dbenchmarks=disabled
+                            -Dnls=disabled
+
+# Feature options for plugins that need external deps
+configure.args-append       -Dgpl=enabled
 
 configure.cppflags-append   "-L${prefix}/lib"
 configure.cflags-append     -std=c99 -funroll-loops -fstrict-aliasing
