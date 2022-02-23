@@ -30,6 +30,8 @@ checksums                   rmd160  5740337a0922c5e31ff7730d0d6616dfd714cd23 \
                             sha256  4e8dcb5d26552f0a4937f6bc6279bd9070f55ca6ae0eaa32d72d264c44001c2e \
                             size    502056
 
+depends_build-append        port:pkgconfig
+
 depends_lib                 port:gstreamer1-gst-plugins-base \
                             port:libmpeg2 \
                             port:x264

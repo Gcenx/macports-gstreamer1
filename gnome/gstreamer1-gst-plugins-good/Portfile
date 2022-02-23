@@ -30,6 +30,8 @@ checksums                   rmd160  a93aac654f4f66e24807105a72f73ddbe0b72fbb \
                             sha256  2d119c15ab8c9e79f8cd3c6bf582ff7a050b28ccae52ab4865e1a1464991659c \
                             size    3409288
 
+depends_build-append        port:pkgconfig
+
 depends_lib                 port:gstreamer1-gst-plugins-base \
                             port:mpg123 \
                             port:orc

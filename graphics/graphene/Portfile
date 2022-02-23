@@ -21,6 +21,9 @@ checksums           rmd160  a62cf420f926f8407d2cd342e578b33ee9e3f759 \
                     sha256  81d4d2079546269c364a1b1c8dabad43102384ce5ca52d8f8d9b674b972a6811 \
                     size    176023
 
+depends_build-append \
+                    port:pkgconfig
+
 depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2
 
 # __GNUC__ is unreliable indicator of SSE existence on macOS

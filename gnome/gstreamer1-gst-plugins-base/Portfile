@@ -26,6 +26,8 @@ checksums                   rmd160  abe96c9f1599bbe0f8cc1086cb084dc270b2e137 \
                             sha256  4cb66fccf730b1037e6533862c2128990912a6db4e5bbd14e0ef914450eb4c7c \
                             size    3286080
 
+depends_build-append        port:pkgconfig
+
 depends_lib-append          port:gstreamer1 \
                             port:graphene \
                             port:orc \

@@ -44,7 +44,8 @@ patchfiles                  libintl.patch \
                             patch-meson_build-atomic-test-older-clang-versions.diff
                             
 depends_build-append        port:gettext \
-                            bin:xmllint:libxml2
+                            bin:xmllint:libxml2 \
+                            port:pkgconfig
 
 depends_lib                 port:gettext-runtime \
                             port:libffi \

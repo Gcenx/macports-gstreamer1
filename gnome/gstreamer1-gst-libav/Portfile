@@ -26,7 +26,8 @@ checksums                   rmd160  dfac39a7af02a69b029396d5c32cedc0f7939275 \
                             sha256  5eee5ed8d5082a31b500448e41535c722ee30cd5f8224f32982bbaba2eedef17 \
                             size    277816
 
-depends_build-append        port:nasm
+depends_build-append        port:nasm \
+                            port:pkgconfig
 
 depends_lib-append          port:gstreamer1-gst-plugins-base \
                             port:ffmpeg

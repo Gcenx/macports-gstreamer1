@@ -28,7 +28,8 @@ checksums                   rmd160  4c3ac70a48079904984bf6323b2140282929059c \
                             size    2671356
 
 depends_build-append        port:bison \
-                            port:gettext
+                            port:gettext \
+                            port:pkgconfig
 
 depends_lib-append          port:gettext-runtime \
                             path:lib/pkgconfig/glib-2.0.pc:glib2

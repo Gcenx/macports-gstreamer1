@@ -46,7 +46,8 @@ patchfiles                  libintl.patch \
                             patch-glib2-findfolders-before-SL.diff
 
 depends_build-append        port:gettext \
-                            bin:xmllint:libxml2
+                            bin:xmllint:libxml2 \
+                            port:pkgconfig
 
 depends_lib                 port:gettext-runtime \
                             port:libffi \
