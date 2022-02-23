@@ -13,8 +13,7 @@ default build_dir           {${workpath}/build}
 
 depends_skip_archcheck-append \
                             meson \
-                            ninja \
-                            pkgconfig
+                            ninja
 
 # TODO: --buildtype=plain tells Meson not to add its own flags to the command line. This gives the packager total control on used flags.
 default configure.cmd       {${prefix}/bin/meson}
@@ -51,7 +50,6 @@ proc meson::get_post_args {} {
 
 proc meson::add_depends {} {
     depends_build-append    port:meson \
-                            port:ninja \
-                            port:pkgconfig
+                            port:ninja
 }
 port::register_callback meson::add_depends
