@@ -5,6 +5,7 @@ PortGroup           python 1.0
 PortGroup           github 1.0
 
 github.setup        mesonbuild meson 0.61.2
+github.tarball_from archive
 revision            1
 
 github.tarball_from releases
@@ -23,14 +24,27 @@ long_description    Meson is a build system designed to optimize programmer prod
                     Valgrind, CCache and the like. It is both extremely fast, and, even more importantly, \
                     as user friendly as possible.
 
-checksums           rmd160  67900ed94d3891dc2e8fcd2cd3347c994de7863a \
-                    sha256  0233a7f8d959079318f6052b0939c27f68a5de86ba601f25c9ee6869fb5f5889 \
-                    size    2014220
+checksums           rmd160  ed3338dc663597993880c258d36539b15876f379 \
+                    sha256  33cd555314a94d52acfbb3f6f44d4e61c4ad0bfec7acf4301be7e40bb969b3a8 \
+                    size    4499656
 
 # as of verison 0.57.0, requires python 3.6 or later
 python.versions         36 37 38 39 310
 python.default_version  310
 python.link_binaries    no
+
+# Workaround TLS v1.2 requirements
+if {${os.major} <= 15} {
+    depends_fetch-append port:curl
+    depends_skip_archcheck-append curl
+
+    fetch {
+        # Manually download the file(s) if they don't exist
+        if {![file exists ${distpath}/${github.project}-${github.version}${extract.suffix} ]} {
+            system -W ${distpath} "${prefix}/bin/curl -Lo ${github.project}-${github.version}${extract.suffix} https://github.com/${github.author}/${github.project}/archive/refs/tags/${github.version}${extract.suffix}"
+        }
+    }
+}
 
 depends_build-append \
                     port:py${python.version}-setuptools

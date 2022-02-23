@@ -13,14 +13,27 @@ maintainers                 {gcenx @gcenx}
 categories                  devel
 platforms                   darwin
 license                     BSD
-homepage                    https://gstreamer.freedesktop.org/modules/orc.html
-master_sites                https://gstreamer.freedesktop.org/src/orc/
+homepage                    https://gstreamer.freedesktop.org/modules/${my_name}.html
+master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
 
 use_xz                      yes
 
 checksums                   rmd160  ce932fd372795226899c47b681455efefe448180 \
                             sha256  a66e3d8f2b7e65178d786a01ef61f2a0a0b4d0b8370de7ce134ba73da4af18f0 \
                             size    180340
+
+# Workaround TLS v1.2 requirements
+if {${os.major} <= 15} {
+    depends_fetch-append port:curl
+    depends_skip_archcheck-append curl
+
+    fetch {
+        # Manually download the file(s) if they don't exist
+        if {![file exists ${distpath}/${distname}${extract.suffix} ]} {
+            system -W ${distpath} "${prefix}/bin/curl -Lo ${distname}${extract.suffix} https://gstreamer.freedesktop.org/src/${my_name}/${distname}${extract.suffix}"
+        }
+    }
+}
 
 test.run                    yes
 

@@ -30,6 +30,19 @@ checksums                   rmd160  5740337a0922c5e31ff7730d0d6616dfd714cd23 \
                             sha256  4e8dcb5d26552f0a4937f6bc6279bd9070f55ca6ae0eaa32d72d264c44001c2e \
                             size    502056
 
+# Workaround TLS v1.2 requirements
+if {${os.major} <= 15} {
+    depends_fetch-append port:curl
+    depends_skip_archcheck-append curl
+
+    fetch {
+        # Manually download the file(s) if they don't exist
+        if {![file exists ${distpath}/${distname}${extract.suffix} ]} {
+            system -W ${distpath} "${prefix}/bin/curl -Lo ${distname}${extract.suffix} https://gstreamer.freedesktop.org/src/${my_name}/${distname}${extract.suffix}"
+        }
+    }
+}
+
 depends_build-append        port:pkgconfig
 
 depends_lib                 port:gstreamer1-gst-plugins-base \
