@@ -24,9 +24,9 @@ long_description    Meson is a build system designed to optimize programmer prod
                     Valgrind, CCache and the like. It is both extremely fast, and, even more importantly, \
                     as user friendly as possible.
 
-checksums           rmd160  ed3338dc663597993880c258d36539b15876f379 \
-                    sha256  33cd555314a94d52acfbb3f6f44d4e61c4ad0bfec7acf4301be7e40bb969b3a8 \
-                    size    4499656
+checksums           rmd160  67900ed94d3891dc2e8fcd2cd3347c994de7863a \
+                    sha256  0233a7f8d959079318f6052b0939c27f68a5de86ba601f25c9ee6869fb5f5889 \
+                    size    2014220
 
 # as of verison 0.57.0, requires python 3.6 or later
 python.versions         36 37 38 39 310
