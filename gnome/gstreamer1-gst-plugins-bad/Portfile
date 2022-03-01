@@ -105,10 +105,6 @@ configure.args-append       -Dapplemedia=disabled \
 # Feature options for plugins that need external deps
 configure.args-append       -Dgpl=enabled
 
-configure.cppflags-append   "-L${prefix}/lib"
-configure.cflags-append     -std=c99 -funroll-loops -fstrict-aliasing
-configure.env-append        "HAVE_CXX=yes"
-
 livecheck.type              regex
 livecheck.url               ${master_sites}
 livecheck.regex             "${my_name}-(\\d+\\\.\\d*\[02468\](?:\\.\\d+)*)${extract.suffix}"
