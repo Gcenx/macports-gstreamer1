@@ -49,6 +49,9 @@ depends_lib                 port:gstreamer1-gst-plugins-base \
                             port:libmpeg2 \
                             port:x264
 
+# https://github.com/mesonbuild/meson/issues/1889
+compiler.cxx_standard       2014
+
 # Feature options for plugins without external deps
 configure.args-append       -Dasfdemux=enabled \
                             -Ddvdlpcmdec=enabled \

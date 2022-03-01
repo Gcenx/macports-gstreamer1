@@ -45,6 +45,9 @@ depends_build-append        port:nasm \
 depends_lib-append          port:gstreamer1-gst-plugins-base \
                             port:ffmpeg
 
+# https://github.com/mesonbuild/meson/issues/1889
+compiler.cxx_standard       2014
+
 livecheck.type              regex
 livecheck.url               ${master_sites}
 livecheck.regex             "${my_name}-(\\d+\\\.\\d*\[02468\](?:\\.\\d+)*)${extract.suffix}"

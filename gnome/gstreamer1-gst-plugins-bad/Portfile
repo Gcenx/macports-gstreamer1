@@ -71,8 +71,8 @@ depends_lib                 port:gstreamer1-gst-plugins-base \
 # plugin opus is now contained in gstreamer1-gst-plugins-base, disable this version
 # plugin ipcpipeline fails to build
 
-# requires support for C11 (redefinition of typedef ‘GstTestHTTPSrc’ at elements/test_http_src.c:101)
-compiler.c_standard 2011
+# https://github.com/mesonbuild/meson/issues/1889
+compiler.cxx_standard       2014
 
 configure.args-append       -Dapplemedia=disabled \
                             -Dfbdev=disabled \

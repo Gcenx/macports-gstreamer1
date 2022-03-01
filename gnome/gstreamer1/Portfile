@@ -47,6 +47,9 @@ depends_build-append        port:bison \
 depends_lib-append          port:gettext-runtime \
                             path:lib/pkgconfig/glib-2.0.pc:glib2
 
+# https://github.com/mesonbuild/meson/issues/1889
+compiler.cxx_standard       2014
+
 configure.args-append       -Dgst_debug=true \
                             -Dgst_parse=false \
                             -Dregistry=true \
