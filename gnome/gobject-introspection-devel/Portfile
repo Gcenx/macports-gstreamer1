@@ -50,6 +50,9 @@ patchfiles          patch-fix-rpath-gir-typelib.diff \
                     patch-fix-scanner-in-build-execution.diff \
                     patch-fix-tools-python.diff
 
+# https://gitlab.gnome.org/GNOME/gobject-introspection/-/commit/effb1e09dee263cdac4ec593e8caf316e6f01fe2
+patchfiles-append   patch-Avoid-the-doctemplates-hack.diff
+
 post-patch {
     reinplace "s|libcairo-gobject.2.dylib|${prefix}/lib/libcairo-gobject.2.dylib|g" ${worksrcpath}/gir/meson.build
     reinplace "s|@MP_LIB@|${prefix}/lib/|g" ${worksrcpath}/giscanner/shlibs.py
@@ -63,7 +66,7 @@ post-patch {
 
 configure.python    ${prefix}/bin/python${py_ver}
 
-configure.args      -Ddoctool=enabled \
+configure.args      -Ddoctool=disabled \
                     -Dpython=${configure.python}
 
 platform darwin 8 {
