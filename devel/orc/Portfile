@@ -13,8 +13,8 @@ maintainers                 {gcenx @gcenx}
 categories                  devel
 platforms                   darwin
 license                     BSD
-homepage                    https://gstreamer.freedesktop.org/modules/${my_name}.html
-master_sites                https://gstreamer.freedesktop.org/src/${my_name}/
+homepage                    https://gstreamer.freedesktop.org/modules/${name}.html
+master_sites                https://gstreamer.freedesktop.org/src/${name}/
 
 use_xz                      yes
 
@@ -30,7 +30,7 @@ if {${os.major} <= 15} {
     fetch {
         # Manually download the file(s) if they don't exist
         if {![file exists ${distpath}/${distname}${extract.suffix} ]} {
-            system -W ${distpath} "${prefix}/bin/curl -Lo ${distname}${extract.suffix} https://gstreamer.freedesktop.org/src/${my_name}/${distname}${extract.suffix}"
+            system -W ${distpath} "${prefix}/bin/curl -Lo ${distname}${extract.suffix} https://gstreamer.freedesktop.org/src/${name}/${distname}${extract.suffix}"
         }
     }
 }
