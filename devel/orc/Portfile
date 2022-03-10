@@ -23,7 +23,7 @@ checksums                   rmd160  ce932fd372795226899c47b681455efefe448180 \
                             size    180340
 
 # Workaround TLS v1.2 requirements
-if {${os.major} <= 15} {
+if {${os.major} < 19} {
     depends_fetch-append port:curl
     depends_skip_archcheck-append curl
 
