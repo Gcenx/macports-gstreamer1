@@ -35,7 +35,7 @@ if {${os.major} < 19} {
     fetch {
         # Manually download the file(s) if they don't exist
         if {![file exists ${distpath}/${distname}${extract.suffix} ]} {
-            system -W ${distpath} "${prefix}/bin/curl -Lo {distname}${extract.suffix} https://gstreamer.freedesktop.org/src/${my_name}/${distname}${extract.suffix}"
+            system -W ${distpath} "${prefix}/bin/curl -Lo ${distname}${extract.suffix} https://gstreamer.freedesktop.org/src/${my_name}/${distname}${extract.suffix}"
         }
     }
 }
