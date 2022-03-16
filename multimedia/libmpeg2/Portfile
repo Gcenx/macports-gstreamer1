@@ -8,7 +8,7 @@ version             0.5.1
 revision            4
 categories          multimedia
 license             GPL-2+
-maintainers         {gcenx @gcenx}
+maintainers         {@gcenx}
 homepage            http://libmpeg2.sourceforge.net/
 description         A free library for decoding mpeg-2 and mpeg-1 video streams.
 long_description    libmpeg2 is a free library for decoding \
