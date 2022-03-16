@@ -11,7 +11,7 @@ revision            1
 github.tarball_from releases
 license             Apache-2
 categories          devel python
-maintainers         {gcenx @gcenx}
+maintainers         {@gcenx}
 platforms           darwin
 supported_archs     noarch
 installs_libs       no

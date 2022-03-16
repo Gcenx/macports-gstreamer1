@@ -19,7 +19,7 @@ checksums                   rmd160  89635511f1827555a6d21507b6700356e5c377cf \
 
 set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  devel
-maintainers                 {gcenx @gcenx}
+maintainers                 {@gcenx}
 license                     LGPL-2+
 homepage                    https://wiki.gnome.org/Projects/GLib
 platforms                   darwin

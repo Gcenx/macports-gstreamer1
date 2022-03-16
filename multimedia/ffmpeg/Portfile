@@ -22,7 +22,7 @@ version             4.4.1
 revision            3
 license             GPL-2+
 categories          multimedia
-maintainers         {devans @dbevans} {jeremyhu @jeremyhu} {mascguy @mascguy} openmaintainer
+maintainers         {@gcenx}
 
 description         FFmpeg is a complete solution to play, record, convert and \
                     stream audio and video.

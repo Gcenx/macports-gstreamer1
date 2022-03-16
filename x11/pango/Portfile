@@ -19,7 +19,7 @@ checksums               rmd160  042c2036057af817a6eecbc98a71b8495d68bd94 \
 
 set branch              [join [lrange [split ${version} .] 0 1] .]
 categories              x11
-maintainers             {gcenx @gcenx}
+maintainers             {@gcenx}
 license                 LGPL-2+
 homepage                https://www.pango.org/
 master_sites            gnome:sources/${my_name}/${branch}
