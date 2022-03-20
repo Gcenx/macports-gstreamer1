@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           github 1.0
 
 github.setup        mesonbuild meson 0.61.2
-github.tarball_from archive
+github.tarball_from releases
 revision            1
 
 github.tarball_from releases
@@ -41,7 +41,7 @@ if {${os.major} < 19} {
     fetch {
         # Manually download the file(s) if they don't exist
         if {![file exists ${distpath}/${github.project}-${github.version}${extract.suffix} ]} {
-            system -W ${distpath} "${prefix}/bin/curl -Lo ${github.project}-${github.version}${extract.suffix} https://github.com/${github.author}/${github.project}/archive/refs/tags/${github.version}${extract.suffix}"
+            system -W ${distpath} "${prefix}/bin/curl -Lo ${github.project}-${github.version}${extract.suffix} https://github.com/${github.author}/${github.project}/${github.tarball_from}/download/${github.version}/${github.project}-${github.version}${extract.suffix}"
         }
     }
 }
