@@ -29,6 +29,6 @@ the above command, which should print something like
 +                                     state.environment.get_shared_lib_dir(),
 +                                     target.filename)]
 +
-         typelib_target = self._make_typelib_target(state, typelib_output, typelib_cmd, generated_files, kwargs)
+         typelib_target = self._make_typelib_target(state, typelib_output, typelib_cmd, generated_files, T.cast('T.Dict[str, T.Any]', kwargs))
  
-         self._devenv_append('GI_TYPELIB_PATH', os.path.join(state.environment.get_build_dir(), state.subdir))
+         self._devenv_prepend('GI_TYPELIB_PATH', os.path.join(state.environment.get_build_dir(), state.subdir))
