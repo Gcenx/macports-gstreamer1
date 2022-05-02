@@ -137,7 +137,6 @@ post-destroot {
 
     set emacs_lispdir ${prefix}/share/emacs/site-lisp
     xinstall -d ${destroot}${emacs_lispdir}
-    #xinstall -m 644 ${worksrcpath}/data/syntax-highlighting/emacs/meson.el ${destroot}${emacs_lispdir}
 }
 
 # the following block avoids requiring users to 'sudo port select python3 python37'
