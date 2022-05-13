@@ -134,9 +134,6 @@ post-destroot {
         xinstall -d ${destroot}${vim_dir}/${d}
         xinstall -m 644 ${worksrcpath}/data/syntax-highlighting/vim/${d}/meson.vim ${destroot}${vim_dir}/${d}
     }
-
-    set emacs_lispdir ${prefix}/share/emacs/site-lisp
-    xinstall -d ${destroot}${emacs_lispdir}
 }
 
 # the following block avoids requiring users to 'sudo port select python3 python37'
