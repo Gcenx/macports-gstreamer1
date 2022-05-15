@@ -28,8 +28,6 @@ checksums           rmd160  96db39f90328a64d508cc7c0075aa89fecde939b \
                     sha256  a0f5caa1e70da12d5e63aa6a9504273759b891af36c8d87de381a4ed1380e845 \
                     size    2034805
 
-# as of verison 0.62.0, requires python 3.7 or later
-python.versions         37 38 39 310
 python.default_version  310
 python.link_binaries    no
 
