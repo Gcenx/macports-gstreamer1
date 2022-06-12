@@ -31,19 +31,6 @@ checksums           rmd160  96db39f90328a64d508cc7c0075aa89fecde939b \
 python.default_version  310
 python.link_binaries    no
 
-# Workaround TLS v1.2 requirements
-if {${os.major} < 19} {
-    depends_fetch-append port:curl
-    depends_skip_archcheck-append curl
-
-    fetch {
-        # Manually download the file(s) if they don't exist
-        if {![file exists ${distpath}/${github.project}-${github.version}${extract.suffix} ]} {
-            system -W ${distpath} "${prefix}/bin/curl -Lo ${github.project}-${github.version}${extract.suffix} https://github.com/${github.author}/${github.project}/${github.tarball_from}/download/${github.version}/${github.project}-${github.version}${extract.suffix}"
-        }
-    }
-}
-
 depends_build-append \
                     port:py${python.version}-setuptools
 
