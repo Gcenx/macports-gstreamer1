@@ -88,10 +88,12 @@ configure.args-append       -Dfbdev=disabled \
                             -Dglib-checks=disabled \
                             -Dnls=disabled
 
-if {[vercmp $macosx_deployment_target 10.14] < 0 } {
-    configure.args-append -Dapplemedia=disabled
+# We put this into a pre-configure block so it can be evaluated _after_ platform selection.
+pre-configure {
+    if {[vercmp $macosx_deployment_target 10.14] < 0 } {
+        configure.args-append -Dapplemedia=disabled
+    }
 }
-
 # Feature options for plugins that need external deps
 configure.args-append       -Dgpl=enabled
 
