@@ -61,8 +61,7 @@ depends_lib                 port:gstreamer1-gst-plugins-base \
 # https://github.com/mesonbuild/meson/issues/1889
 compiler.cxx_standard       2014
 
-configure.args-append       -Dapplemedia=disabled \
-                            -Dfbdev=disabled \
+configure.args-append       -Dfbdev=disabled \
                             -Ddecklink=disabled \
                             -Dchromaprint=disabled \
                             -Dcurl=disabled \
@@ -88,6 +87,10 @@ configure.args-append       -Dapplemedia=disabled \
                             -Dglib-asserts=disabled \
                             -Dglib-checks=disabled \
                             -Dnls=disabled
+
+if {[vercmp $macosx_deployment_target 10.14] < 0 } {
+    configure.args-append -Dapplemedia=disabled
+}
 
 # Feature options for plugins that need external deps
 configure.args-append       -Dgpl=enabled
