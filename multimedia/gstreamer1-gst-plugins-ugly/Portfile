@@ -17,8 +17,7 @@ long_description            GStreamer Ugly Plug-ins is a set of plug-ins that ha
                             license on either the plug-ins or the supporting libraries might not be how \
                             we'd like. The code might be widely known to present patent problems.
 maintainers                 {@gcenx}
-categories                  gnome
-platforms                   darwin
+categories                  multimedia
 license                     GPL-2+ LGPL-2+
 homepage                    https://gstreamer.freedesktop.org/modules/${my_name}.html
 distname                    ${my_name}-${version}

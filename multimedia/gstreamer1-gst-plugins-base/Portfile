@@ -13,8 +13,7 @@ version                     1.20.0
 description                 This is gst-plugins, a set of plug-ins for GStreamer.
 long_description            ${description}
 maintainers                 {@gcenx}
-categories                  gnome
-platforms                   darwin
+categories                  multimedia
 license                     LGPL-2+
 homepage                    https://gstreamer.freedesktop.org/modules/${my_name}.html
 distname                    ${my_name}-${version}
