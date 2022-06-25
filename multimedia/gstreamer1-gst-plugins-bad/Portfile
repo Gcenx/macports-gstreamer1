@@ -93,6 +93,7 @@ pre-configure {
         configure.args-append -Dapplemedia=disabled
     }
 }
+
 # Feature options for plugins that need external deps
 configure.args-append       -Dgpl=enabled
 
