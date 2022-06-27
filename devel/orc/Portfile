@@ -24,7 +24,8 @@ checksums                   rmd160  ce932fd372795226899c47b681455efefe448180 \
 
 test.run                    yes
 
-# Orc feature options       -Dorce-test=disabled
+# Orc feature options
+configure.args-append       -Dorc-test=disabled
 
 # Common feature options
 configure.args-append       -Dbenchmarks=disabled \
