@@ -1,35 +1,30 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
-PortSystem                  1.0
-PortGroup                   meson 1.0
+PortSystem          1.0
+PortGroup           gitlab 1.0
+PortGroup           meson 1.0
 
-name                        orc
-version                     0.4.32
-revision                    1
-description                 Orc - The Oil Runtime Compiler
-long_description            Orc is a library and set of tools for compiling \
-                            and executing very simple programs that operate on arrays of data.
-maintainers                 {@gcenx}
-categories                  devel
-platforms                   darwin
-license                     BSD
-homepage                    https://gstreamer.freedesktop.org/modules/${name}.html
-master_sites                https://gstreamer.freedesktop.org/src/${name}/
+gitlab.setup        gstreamer orc 0.4.32
+revision            2
+description         Orc - The Oil Runtime Compiler
+long_description    Orc is a library and set of tools for compiling \
+                    and executing very simple programs that operate on arrays of data.
+maintainers         {@gcenx}
+categories          devel
+license             BSD
 
-use_xz                      yes
-
-checksums                   rmd160  ce932fd372795226899c47b681455efefe448180 \
-                            sha256  a66e3d8f2b7e65178d786a01ef61f2a0a0b4d0b8370de7ce134ba73da4af18f0 \
-                            size    180340
-
-test.run                    yes
+checksums           rmd160  53bdfaf021e2695e8695bc432d425d89eb1140ba \
+                    sha256  c872fc1ac747f1a8e1f42b79794a2e28f5c402b401e8cbb4a5289b2a59cc2b63 \
+                    size    209379
 
 # Orc feature options
-configure.args-append       -Dorc-test=disabled
+configure.args-append \
+    -Dorc-test=disabled
 
 # Common feature options
-configure.args-append       -Dbenchmarks=disabled \
-                            -Dexamples=disabled \
-                            -Dgtk_doc=disabled \
-                            -Dtests=disabled \
-                            -Dtools=enabled
+configure.args-append \
+    -Dbenchmarks=disabled \
+    -Dexamples=disabled \
+    -Dgtk_doc=disabled \
+    -Dtests=disabled \
+    -Dtools=enabled
