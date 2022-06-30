@@ -161,8 +161,11 @@ subport gst-plugins-good {
         ${worksrcpath}/subprojects/gst-plugins-good
 
     depends_lib-append \
+        port:flac \
         port:gst-plugins-base \
-        port:mpg123
+        port:lame \
+        port:mpg123 \
+        port:libvpx
 
     # Feature options for plugins without external deps
     configure.args-append \
@@ -177,18 +180,18 @@ subport gst-plugins-good {
         -Ddirectsound=enabled \
         -Ddv=disabled \
         -Ddv1394=disabled \
-        -Dflac=disabled \
+        -Dflac=enabled \
         -Dgdk-pixbuf=disabled \
         -Dgtk3=disabled \
         -Djack=disabled \
         -Djpeg=disabled \
-        -Dlame=disabled \
+        -Dlame=enabled \
         -Dlibcaca=disabled \
         -Dmpg123=enabled \
         -Doss=disabled \
         -Doss4=disabled \
-        -Dosxaudio=disabled \
-        -Dosxvideo=disabled \
+        -Dosxaudio=enabled \
+        -Dosxvideo=enabled \
         -Dpng=disabled \
         -Dpulse=disabled \
         -Dqt5=disabled \
@@ -197,7 +200,7 @@ subport gst-plugins-good {
         -Dspeex=disabled \
         -Dtaglib=disabled \
         -Dtwolame=disabled \
-        -Dvpx=disabled \
+        -Dvpx=enabled \
         -Dwaveform=disabled \
         -Dwavpack=disabled
 
