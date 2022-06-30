@@ -164,8 +164,8 @@ subport gst-plugins-good {
         port:flac \
         port:gst-plugins-base \
         port:lame \
-        port:mpg123 \
-        port:libvpx
+        path:lib/pkgconfig/vpx.pc:libvpx \
+        port:mpg123
 
     # Feature options for plugins without external deps
     configure.args-append \
