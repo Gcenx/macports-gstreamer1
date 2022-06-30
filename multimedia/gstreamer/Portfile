@@ -112,6 +112,8 @@ subport gst-plugins-base {
     depends_lib-append \
         port:gstreamer \
         port:libogg \
+        port:libopus \
+        port:libvorbis \
         port:zlib
 
     # Feature option for opengl plugin and integration library
@@ -132,11 +134,11 @@ subport gst-plugins-base {
         -Dcdparanoia=disabled \
         -Dlibvisual=disabled \
         -Dogg=enabled \
-        -Dopus=disabled \
+        -Dopus=enabled \
         -Dpango=disabled \
         -Dtheora=disabled \
         -Dtremor=disabled \
-        -Dvorbis=disabled \
+        -Dvorbis=enabled \
         -Dx11=disabled \
         -Dxshm=disabled \
         -Dxvideo=disabled
