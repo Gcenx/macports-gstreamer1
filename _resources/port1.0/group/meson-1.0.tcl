@@ -24,17 +24,17 @@ configure.universal_args-delete \
 # Set "python3" to be used, keep in sync with meson port
 set py_ver                  3.10
 set py_ver_nodot            [string map {. {}} ${py_ver}]
-configure.env-append        PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
+foreach stage {configure build destroot test} {
+    ${stage}.env-append     PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
+}
 
 default build.dir           {${build_dir}}
 default build.cmd           {${prefix}/bin/ninja}
 default build.post_args     {-v}
 default build.target        ""
-build.env-append            PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
 
 # remove DESTDIR= from arguments, but rather take it from environmental variable
 destroot.env-append         DESTDIR=${destroot}
-destroot.env-append         PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
 default destroot.post_args  ""
 
 namespace eval meson { }
