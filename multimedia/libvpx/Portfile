@@ -5,12 +5,14 @@ PortGroup           compiler_blacklist_versions 1.0
 PortGroup           muniversal 1.0
 
 name                libvpx
-version             1.11.0
+conflicts           libvpx-devel
+set my_name         libvpx
+version             1.12.0
 revision            0
+
 categories          multimedia
-maintainers         {@gcenx}
-platforms           darwin
 license             Permissive
+maintainers         {@gcenx}
 
 description         WebM VP8/VP9 Codec SDK
 long_description    The WebM VP8/VP9 codecs are being developed \
@@ -24,22 +26,29 @@ long_description    The WebM VP8/VP9 codecs are being developed \
 
 homepage            http://webmproject.org/tools/
 
+distname            ${my_name}-${version}
+dist_subdir         ${my_name}
+
 # use git fetch rather than downloading a snapshot tarball
 # which delivers a different checksum and size on each download
 # this is not a stealth upgrade but a "feature" of this repo
 
 fetch.type          git
-git.url             https://chromium.googlesource.com/webm/${name}
+git.url             https://chromium.googlesource.com/webm/${my_name}
 git.branch          v${version}
 
-# support for non-intel archs removed in version 1.5.0
-supported_archs     x86_64 i386 arm64
+# upstream support for non-intel archs removed in version 1.5.0
+supported_archs     x86_64 i386 arm64 ppc ppc64
 
-patchfiles          patch-Makefile.diff \
-                    patch-configure.sh.diff
+patchfiles-append   patch-Makefile.diff
 
-# uses newer assembly features on Intel
-compiler.blacklist-append  {*gcc-[3-4].*} {clang < 800} {macports-clang-3.*}
+# Don’t set -isysroot nor -mmacosx-version-min
+patchfiles-append   patch-configure.sh.diff
+
+# Uses newer assembly features on Intel.
+# Also blacklist clang 8, due to issues like:
+#   error: use of undeclared identifier 'abs'
+compiler.blacklist-append  {*gcc-[3-4].*} {clang < 900} {macports-clang-3.*}
 
 # As of 1.7.0: builds both static and shared libraries
 # doesn't install docs or examples correctly, so disable them.
@@ -50,11 +59,26 @@ configure.args      --enable-vp8 \
                     --enable-postproc \
                     --enable-multithread \
                     --enable-experimental \
-                    --enable-shared \
                     --disable-install-docs \
                     --disable-debug-libs \
                     --disable-examples \
-                    --disable-unit-tests
+                    --enable-unit-tests
+
+platform darwin {
+    if {${build_arch} eq "ppc" || ${build_arch} eq "ppc64"} {
+        # disable a wrong kind of abi
+        patchfiles-append      patch-vpx_ports.diff
+        # with shared enabled the build fails
+        configure.args-append  --disable-shared
+    } else {
+        configure.args-append  --enable-shared
+    }
+}
+
+platform darwin 8 {
+    depends_build-append  port:gmake
+    build.cmd             ${prefix}/bin/gmake
+}
 
 build.target
 build.args          verbose=1
@@ -80,6 +104,15 @@ if {${universal_possible} && [variant_isset universal]} {
         set merger_configure_env(${my_arch})      LD=${configure.cc}
     }
 
+    foreach my_arch {ppc ppc64} {
+
+        set merger_host(${my_arch}) ""
+
+        set merger_configure_args(${my_arch})     --force-target=generic-gnu
+
+        set merger_configure_env(${my_arch})      LD=${configure.cc}
+    }
+
     if {"x86_64" in ${configure.universal_archs} || "i386" in ${configure.universal_archs}} {
         depends_build-append  port:yasm
         depends_skip_archcheck-append yasm
@@ -98,10 +131,14 @@ if {${universal_possible} && [variant_isset universal]} {
 
 } else {
 
-    # normal build
-
-    # force the target
-    configure.args-append --force-target=${configure.build_arch}-${os.platform}${os.major}-gcc
+    # single-arch build
+    
+    # force the target: generic fix for PowerPC
+    if {${build_arch} eq "ppc" || ${build_arch} eq "ppc64"} {
+           configure.args-append --force-target=generic-gnu
+    } else {
+           configure.args-append --force-target=${configure.build_arch}-${os.platform}${os.major}-gcc
+    }
 
     # set LD
     configure.env-append  LD=${configure.cc}
@@ -122,11 +159,14 @@ if {${universal_possible} && [variant_isset universal]} {
 # shared library uses relative path in install name
 # override with absolute path
 post-destroot {
-    foreach f [glob ${destroot}${prefix}/lib/${name}.*.dylib] {
+    foreach f [glob ${destroot}${prefix}/lib/${my_name}.*.dylib] {
         system "install_name_tool -id [string map [list ${destroot} ""] ${f}] ${f}"
     }
 }
 
+test.run        yes
+test.target     test
+
 livecheck.type  regex
-livecheck.url   https://chromium.googlesource.com/webm/${name}
+livecheck.url   https://chromium.googlesource.com/webm/${my_name}
 livecheck.regex ">v(\\d+(?:\\.\\d+)*)<"
