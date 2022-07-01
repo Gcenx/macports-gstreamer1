@@ -40,6 +40,9 @@ git.branch          v${version}
 # upstream support for non-intel archs removed in version 1.5.0
 supported_archs     x86_64 i386 arm64 ppc ppc64
 
+# Only use git format patches
+patch.pre_args      -p1
+
 patchfiles-append   patch-Makefile.diff
 
 # Don’t set -isysroot nor -mmacosx-version-min
