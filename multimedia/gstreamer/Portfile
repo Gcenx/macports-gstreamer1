@@ -163,7 +163,6 @@ subport gst-plugins-good {
     depends_lib-append \
         port:flac \
         port:gst-plugins-base \
-        port:lame \
         path:lib/pkgconfig/vpx.pc:libvpx \
         port:mpg123
 
@@ -185,7 +184,7 @@ subport gst-plugins-good {
         -Dgtk3=disabled \
         -Djack=disabled \
         -Djpeg=disabled \
-        -Dlame=enabled \
+        -Dlame=disabled \
         -Dlibcaca=disabled \
         -Dmpg123=enabled \
         -Doss=disabled \
