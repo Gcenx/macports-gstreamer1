@@ -11,22 +11,23 @@
 # meson builds need to be done out-of-source
 default build_dir           {${workpath}/build}
 
-depends_skip_archcheck-append \
-                            meson \
-                            ninja
-
-# TODO: --buildtype=plain tells Meson not to add its own flags to the command line. This gives the packager total control on used flags.
-default configure.cmd       {${prefix}/bin/meson}
-default configure.post_args {[meson::get_post_args]}
-configure.universal_args-delete \
-                            --disable-dependency-tracking
-
 # Set "python3" to be used, keep in sync with meson port
 set py_ver                  3.10
 set py_ver_nodot            [string map {. {}} ${py_ver}]
 foreach stage {configure build destroot test} {
     ${stage}.env-append     PATH=${frameworks_dir}/Python.framework/Versions/${py_ver}/bin:$env(PATH)
 }
+
+depends_skip_archcheck-append \
+                            meson \
+                            ninja \
+                            python${py_ver_nodot}
+
+# TODO: --buildtype=plain tells Meson not to add its own flags to the command line. This gives the packager total control on used flags.
+default configure.cmd       {${prefix}/bin/meson}
+default configure.post_args {[meson::get_post_args]}
+configure.universal_args-delete \
+                            --disable-dependency-tracking
 
 default build.dir           {${build_dir}}
 default build.cmd           {${prefix}/bin/ninja}
