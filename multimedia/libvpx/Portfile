@@ -108,11 +108,14 @@ configure.args.x86_64-append   --enable-runtime-cpu-detect
 configure.args.ppc-append      --force-target=generic-gnu
 configure.args.ppc64-append    --force-target=generic-gnu
 
-# shouldn't this also be set for arm64?
 if {"x86_64" in ${muniversal.build_arch} || "i386" in ${muniversal.build_arch}} {
     depends_build-append  port:yasm
     depends_skip_archcheck-append yasm
-    build.env-append CFLAGS_S=-fno-integrated-as
+
+    # parses the assembly output by default even when emitting assembly
+    if {[string match {*clang*} ${configure.compiler}]} {
+        build.args-append CFLAGS_S=-fno-integrated-as
+    }
 }
 
 # shared library uses relative path in install name
