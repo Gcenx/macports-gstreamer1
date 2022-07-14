@@ -96,10 +96,10 @@ if {"${configure.sdkroot}" eq ""} {
 triplet.host_cmd
 
 # if yes, set architecture in compiler flags
-default muniversal.arch_flag {no}
+muniversal.arch_flag {no}
 
 # if yes, append architecture flag to compiler name
-default muniversal.arch_compiler {no}
+muniversal.arch_compiler {no}
 
 foreach my_arch {arm64 i386 x86_64} {
    configure.args.${my_arch}-append     --force-target=${my_arch}-${os.platform}${os.major}-gcc
