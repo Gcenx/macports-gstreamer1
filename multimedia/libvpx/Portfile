@@ -95,9 +95,11 @@ if {"${configure.sdkroot}" eq ""} {
 # not sure on this options usage 
 triplet.host_cmd
 
-foreach my_arch {i386 x86_64 arm64} {
-   configure.args.${my_arch}     --force-target=${my_arch}-${os.platform}${os.major}-gcc
+foreach my_arch {arm64 i386 x86_64} {
+   configure.args.${my_arch}-append     --force-target=${my_arch}-${os.platform}${os.major}-gcc
 }
+
+configure.env-append  LD=${configure.cc}
 
 # for Intel archs, allow runtime cpu detection
 configure.args.i386-append     --enable-runtime-cpu-detect
@@ -110,6 +112,7 @@ configure.args.ppc64-append    --force-target=generic-gnu
 if {"x86_64" in ${muniversal.build_arch} || "i386" in ${muniversal.build_arch}} {
     depends_build-append  port:yasm
     depends_skip_archcheck-append yasm
+    build.env-append CFLAGS_S=-fno-integrated-as
 }
 
 # shared library uses relative path in install name
